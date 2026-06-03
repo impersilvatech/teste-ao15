@@ -1,28 +1,28 @@
 {
-  "name": "Nome da Loja",
-  "short_name": "Loja",
-  "description": "A melhor loja online",
-  "start_url": "/SLUG/",
-  "scope": "/SLUG/",
+  "name": "Teste.ao15",
+  "short_name": "Teste.ao15",
+  "description": "Loja online — Teste.ao15",
+  "start_url": "/teste-ao15/",
+  "scope": "/teste-ao15/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0d0d1a",
   "theme_color": "#0d0d1a",
   "icons": [
     {
-      "src": "/SLUG/favicon.svg",
+      "src": "/teste-ao15/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/SLUG/favicon.svg",
+      "src": "/teste-ao15/favicon.svg",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/SLUG/favicon.svg",
+      "src": "/teste-ao15/favicon.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
