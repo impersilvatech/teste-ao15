@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-AO" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#0d0d1a"/>
+<title>Pedido Confirmado!</title>
+<script>
+(function(){
+  var t=localStorage.getItem('tema')||'dark';
+  var l=localStorage.getItem('idioma')||'pt';
+  document.documentElement.setAttribute('data-theme',t);
+  document.documentElement.setAttribute('lang',l==='en'?'en':'pt-AO');
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(function(){});
+})();
+</script>
+<script src="config.js"></script>
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0d0d1a;--card:#1a1a32;--border:#2a2a4a;--pink:#ff6b9d;--purple:#b14ae8;--teal:#06d6a0;--yellow:#ffd166;--red:#ff4757;--white:#f0f0ff;--muted:#9898bb;--ft:'Fredoka One',cursive;--fb:'Nunito',sans-serif;--grad:linear-gradient(135deg,#ff6b9d,#b14ae8)}
+[data-theme="light"]{--bg:#fff5f8;--card:#fff;--border:#f0d6e8;--white:#1a0a2e;--muted:#7a5a8a;--pink:#d4437d;--purple:#7a2fb0;--teal:#048a65;--red:#d63547;--yellow:#a07800}
+.empty-state{text-align:center;padding:80px 20px;color:var(--muted)}
+.empty-state i{font-size:3rem;margin-bottom:16px;display:block;color:var(--border)}
+.empty-state h2{font-family:var(--ft);font-size:1.2rem;margin-bottom:8px;color:var(--white)}
+.empty-state p{font-size:.85rem;margin-bottom:24px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--white);min-height:100vh;padding:20px 0 60px}
+.confetti-wrap{position:fixed;top:0;left:0;right:0;pointer-events:none;z-index:0;height:100vh;overflow:hidden}
+.cdot{position:absolute;top:-12px;border-radius:50%;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.main{width:100%;max-width:460px;padding:24px 16px 40px;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;margin:0 auto;text-align:center}
+.check-circle{width:90px;height:90px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:2.4rem;margin:20px auto 18px;box-shadow:0 0 0 12px rgba(255,107,157,.15),0 0 0 24px rgba(255,107,157,.07);animation:pop .5s cubic-bezier(.34,1.56,.64,1) both;color:#fff}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+h1{font-family:var(--ft);font-size:1.6rem;margin-bottom:6px}
+.sub{color:var(--muted);font-size:.88rem;margin-bottom:24px;line-height:1.5}
+.sub strong{color:var(--white)}
+.ref-box{width:100%;text-align:center;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:18px;margin-bottom:12px}
+.ref-lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.ref-val{font-family:var(--ft);font-size:1.7rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px}
+.ref-copy{margin-top:8px;background:none;border:1px solid var(--border);border-radius:50px;padding:5px 14px;font-size:.68rem;color:var(--muted);cursor:pointer;transition:all .2s}
+.ref-copy:hover{border-color:var(--pink);color:var(--pink)}
+.info-card{width:100%;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px;text-align:left}
+.info-l{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:.84rem}
+.info-l:last-child{border-bottom:none}
+.info-l span:first-child{color:var(--muted)}
+.info-l strong{font-family:var(--ft)}
+.passos{width:100%;display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.passo{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:14px;text-align:left}
+.passo-n{width:30px;height:30px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:var(--ft);font-size:.85rem;color:#fff;flex-shrink:0}
+.passo-txt strong{display:block;font-size:.84rem;margin-bottom:1px}
+.passo-txt span{font-size:.72rem;color:var(--muted)}
+.btn-wa{width:100%;padding:15px;background:linear-gradient(135deg,#128c7e,#25d366);border:none;border-radius:50px;font-family:var(--ft);font-size:.95rem;color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(37,211,102,.3);display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;margin-bottom:10px;transition:all .2s}
+.btn-wa:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn-rastrear{width:100%;padding:14px;background:var(--grad);border:none;border-radius:50px;font-family:var(--ft);font-size:.9rem;color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,157,.3);display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;margin-bottom:10px;transition:all .2s}
+.btn-rastrear:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn-cat{width:100%;padding:13px;background:none;border:1.5px solid var(--border);border-radius:50px;font-family:var(--ft);font-size:.88rem;color:var(--muted);cursor:pointer;text-decoration:none;display:block;text-align:center;transition:all .2s}
+.btn-cat:hover{border-color:var(--pink);color:var(--pink)}
+.spin{width:26px;height:26px;border:3px solid var(--border);border-top-color:var(--pink);border-radius:50%;animation:spin-anim .8s linear infinite;margin:80px auto}
+@keyframes spin-anim{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="confetti-wrap" id="confetti"></div>
+<div class="main" id="main" style="display:none">
+  <div class="check-circle"><i class="fa-solid fa-check"></i></div>
+  <h1 id="titleTxt">Pedido Confirmado!</h1>
+  <p class="sub" id="subTxt">Obrigado pelo seu pedido.<br>Entraremos em contacto em breve.</p>
+
+  <div class="ref-box">
+    <div class="ref-lbl" id="refLbl">Referência do pedido</div>
+    <div class="ref-val" id="refVal">—</div>
+    <button class="ref-copy" id="btnCopiar" onclick="copiarRef()"><i class="fa-regular fa-copy"></i> <span id="copyTxt">Copiar referência</span></button>
+  </div>
+
+  <div class="info-card">
+    <div class="info-l"><span id="totalLbl">Total</span><strong id="totalVal" style="color:var(--pink)">—</strong></div>
+    <div class="info-l"><span id="estadoLbl">Estado</span><strong style="color:var(--teal)"><i class="fa-solid fa-circle-check"></i> <span id="estadoVal">Recebido</span></strong></div>
+    <div class="info-l"><span id="pagLbl">Pagamento</span><strong style="color:var(--yellow)"><i class="fa-regular fa-clock"></i> <span id="pagVal">Pendente</span></strong></div>
+  </div>
+
+  <div class="passos">
+    <div class="passo"><div class="passo-n">1</div><div class="passo-txt"><strong id="p1title">Acerte o pagamento</strong><span id="p1sub">Combine os detalhes com a loja pelo WhatsApp.</span></div></div>
+    <div class="passo"><div class="passo-n">2</div><div class="passo-txt"><strong id="p2title">Acompanhe o pedido</strong><span id="p2sub">Use a referência para rastrear o estado da sua encomenda.</span></div></div>
+    <div class="passo"><div class="passo-n">3</div><div class="passo-txt"><strong id="p3title">Entrega ou levantamento</strong><span id="p3sub">Será notificado quando estiver pronto.</span></div></div>
+  </div>
+
+  <a href="#" class="btn-rastrear" id="btnRastrear">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span id="btnRastrearTxt">Rastrear a minha encomenda</span>
+  </a>
+
+  <a href="#" class="btn-wa" id="btnWa" target="_blank" rel="noopener">
+    <i class="fa-brands fa-whatsapp" style="font-size:1.4rem"></i>
+    <span id="btnWaTxt">Falar com a loja pelo WhatsApp</span>
+  </a>
+
+  <a href="catalogo.html" class="btn-cat"><i class="fa-solid fa-store"></i> <span id="btnCatTxt">Continuar a comprar</span></a>
+</div>
+<div class="spin" id="spinnerConfirmacao"></div>
+
+<script>
+var API = window.SITE_API || 'https://SLUG.workers.dev';
+var idioma=localStorage.getItem('idioma')||'pt';
+
+var i18n={
+  pt:{pageTitle:'Pedido Confirmado!',title:'Pedido Confirmado!',
+      thankYou:'Obrigado, <strong>%name%</strong>!<br>Entraremos em contacto em breve.',
+      thankYouGeneric:'Obrigado pelo seu pedido.<br>Entraremos em contacto em breve.',
+      refLabel:'Referência do pedido',copy:'Copiar referência',copied:'Copiado!',
+      total:'Total',status:'Estado',received:'Recebido',payment:'Pagamento',pending:'Pendente',
+      p1title:'Acerte o pagamento',p1sub:'Combine os detalhes com a loja pelo WhatsApp.',
+      p2title:'Acompanhe o pedido',p2sub:'Use a referência para rastrear o estado da sua encomenda.',
+      p3title:'Entrega ou levantamento',p3sub:'Será notificado quando estiver pronto.',
+      track:'Rastrear a minha encomenda',whatsapp:'Falar com a loja pelo WhatsApp',
+      continueShopping:'Continuar a comprar',
+      waMsg:'Olá! Acabei de fazer um pedido.\n\nReferência: %ref%\nTotal: %total%\n\nGostaria de acertar o pagamento. Obrigado!',
+      noOrder:'Nenhum pedido encontrado',noOrderSub:'Parece que já não há dados deste pedido. Pode ter expirado.',
+      goShop:'Ir às compras'},
+  en:{pageTitle:'Order Confirmed!',title:'Order Confirmed!',
+      thankYou:'Thank you, <strong>%name%</strong>!<br>We will be in touch shortly.',
+      thankYouGeneric:'Thank you for your order.<br>We will be in touch shortly.',
+      refLabel:'Order reference',copy:'Copy reference',copied:'Copied!',
+      total:'Total',status:'Status',received:'Received',payment:'Payment',pending:'Pending',
+      p1title:'Arrange payment',p1sub:'Sort out the details with the store via WhatsApp.',
+      p2title:'Track your order',p2sub:'Use the reference to track your order status.',
+      p3title:'Delivery or pickup',p3sub:'You will be notified when it is ready.',
+      track:'Track my order',whatsapp:'Chat with the store on WhatsApp',
+      continueShopping:'Continue shopping',
+      waMsg:'Hi! I just placed an order.\n\nReference: %ref%\nTotal: %total%\n\nI would like to arrange payment. Thank you!',
+      noOrder:'No order found',noOrderSub:'It looks like this order\'s data has expired.',
+      goShop:'Go shopping'}
+};
+function t(k){return(i18n[idioma]||i18n.pt)[k]||(i18n.pt)[k]||k;}
+function kz(v){if(v==null)return'—';return'Kz '+Number(v).toLocaleString('pt');}
+
+async function carregar(){
+  var ref=localStorage.getItem('ist_ref');
+  var total=localStorage.getItem('ist_total')||'0';
+  var nome=localStorage.getItem('ist_nome')||'';
+
+  /* Aplicar idioma à UI estática */
+  document.title=t('pageTitle');
+  document.getElementById('titleTxt').textContent=t('title');
+  document.getElementById('refLbl').textContent=t('refLabel');
+  document.getElementById('copyTxt').textContent=t('copy');
+  document.getElementById('totalLbl').textContent=t('total');
+  document.getElementById('estadoLbl').textContent=t('status');
+  document.getElementById('estadoVal').textContent=t('received');
+  document.getElementById('pagLbl').textContent=t('payment');
+  document.getElementById('pagVal').textContent=t('pending');
+  document.getElementById('p1title').textContent=t('p1title');
+  document.getElementById('p1sub').textContent=t('p1sub');
+  document.getElementById('p2title').textContent=t('p2title');
+  document.getElementById('p2sub').textContent=t('p2sub');
+  document.getElementById('p3title').textContent=t('p3title');
+  document.getElementById('p3sub').textContent=t('p3sub');
+  document.getElementById('btnRastrearTxt').textContent=t('track');
+  document.getElementById('btnWaTxt').textContent=t('whatsapp');
+  document.getElementById('btnCatTxt').textContent=t('continueShopping');
+
+  /* Fallback: se não há referência, mostrar estado vazio */
+  if(!ref||ref==='—'){
+    document.getElementById('main').innerHTML=
+      '<div class="empty-state">'+
+        '<i class="fa-regular fa-face-sad-tear"></i>'+
+        '<h2>'+t('noOrder')+'</h2>'+
+        '<p>'+t('noOrderSub')+'</p>'+
+        '<a href="catalogo.html" class="btn-rastrear" style="width:auto;padding:13px 28px;text-decoration:none">'+
+          '<i class="fa-solid fa-store"></i> '+t('goShop')+
+        '</a>'+
+      '</div>';
+    document.getElementById('main').style.display='flex';
+    document.getElementById('spinnerConfirmacao').style.display='none';
+    return;
+  }
+
+  document.getElementById('refVal').textContent=ref;
+  document.getElementById('totalVal').textContent=kz(Number(total));
+  document.getElementById('btnRastrear').href='rastrear.html?ref='+encodeURIComponent(ref);
+
+  if(nome){
+    document.getElementById('subTxt').innerHTML=t('thankYou').replace('%name%',nome.split(' ')[0]);
+  }else{
+    document.getElementById('subTxt').innerHTML=t('thankYouGeneric');
+  }
+
+  try{
+    var r=await fetch(API + '/api/loja/publica');var loja=await r.json();
+    var waNum=(loja.whatsapp||'').replace(/\D/g,'');
+    if(waNum){
+      var msg=t('waMsg').replace('%ref%',ref).replace('%total%',kz(Number(total)));
+      document.getElementById('btnWa').href='https://wa.me/'+waNum+'?text='+encodeURIComponent(msg);
+    }else{
+      document.getElementById('btnWa').style.display='none';
+    }
+  }catch(e){document.getElementById('btnWa').style.display='none';}
+
+  /* Limpar localStorage após usar os dados */
+  ['ist_ref','ist_total','ist_nome','ist_wa'].forEach(function(k){localStorage.removeItem(k);});
+
+  /* Mostrar conteúdo e esconder spinner */
+  document.getElementById('main').style.display='flex';
+  document.getElementById('spinnerConfirmacao').style.display='none';
+
+  lancarConfetti();
+}
+
+function lancarConfetti(){
+  var cont=document.getElementById('confetti');
+  var cores=['#ff6b9d','#b14ae8','#ffd166','#06d6a0','#ff9f43','#ff4757'];
+  var fragment=document.createDocumentFragment();
+  for(var i=0;i<80;i++){
+    var d=document.createElement('div');d.className='cdot';
+    var size=Math.random()*10+5;
+    var dur=Math.random()*2+2;
+    d.style.cssText='left:'+(Math.random()*100)+'%;width:'+size+'px;height:'+size+'px;background:'+cores[Math.floor(Math.random()*cores.length)]+';animation-duration:'+dur+'s;animation-delay:'+(Math.random()*2)+'s';
+    fragment.appendChild(d);
+  }
+  cont.appendChild(fragment);
+  setTimeout(function(){cont.innerHTML='';},5000);
+}
+
+function copiarRef(){
+  var ref=document.getElementById('refVal').textContent;
+  navigator.clipboard.writeText(ref).then(function(){
+    var btn=document.getElementById('btnCopiar');
+    var span=document.getElementById('copyTxt');
+    span.textContent=t('copied');
+    btn.style.color='var(--teal)';btn.style.borderColor='var(--teal)';
+    setTimeout(function(){span.textContent=t('copy');btn.style.color='';btn.style.borderColor='';},2500);
+  });
+}
+
+carregar();
+</script>
+</body>
+</html>
