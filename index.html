@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-AO" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#0d0d1a"/>
+<title id="pageTitle">Loja</title>
+<meta name="description" id="metaDesc" content="Loja online de doces e salgados em Angola"/>
+<meta name="keywords" id="metaKw" content="doces, salgados, bolos, pastelaria, Angola"/>
+<meta name="author" content="IMPERSILVATECH"/>
+<meta name="robots" content="index, follow"/>
+<meta property="og:title" id="ogTitle" content="IMPERSILVATECH"/>
+<meta property="og:description" id="ogDesc" content="Loja online de doces e salgados"/>
+<meta property="og:image" content="/Loja/favicon.svg"/>
+<meta property="og:url" id="ogUrl" content=""/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="pt_AO"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" id="twTitle" content="IMPERSILVATECH"/>
+<meta name="twitter:description" id="twDesc" content="Loja online de doces e salgados"/>
+<link rel="canonical" id="canonical" href=""/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="IMPERSILVA"/>
+<link rel="apple-touch-icon" href="/Loja/favicon.svg"/>
+<link rel="manifest" href="/Loja/manifest.json"/>
+<link rel="icon" href="/Loja/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<script type="application/ld+json" id="schemaJson">
+{
+  "@context": "https://schema.org",
+  "@type": "Store",
+  "name": "IMPERSILVATECH",
+  "description": "Loja online de doces e salgados",
+  "url": "",
+  "telephone": "",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "",
+    "addressLocality": "",
+    "addressRegion": "",
+    "addressCountry": "AO"
+  }
+}
+</script>
+<script src="config.js"></script>
+<style>
+:root{--bg:#0d0d1a;--bg2:#14142b;--card:#1a1a32;--border:#2a2a4a;--pink:#ff6b9d;--purple:#b14ae8;--teal:#06d6a0;--white:#f0f0ff;--muted:#9898bb;--ft:'Fredoka One',cursive;--fb:'Nunito',sans-serif;--grad:linear-gradient(135deg,#ff6b9d,#b14ae8)}
+[data-theme="light"]{--bg:#fff5f8;--bg2:#fff;--card:#fff;--border:#f0d6e8;--white:#1a0a2e;--muted:#7a5a8a;--pink:#d4437d;--purple:#7a2fb0;--teal:#048a65}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--white);min-height:100vh;padding-bottom:80px;transition:background .35s,color .35s}
+.hdr{position:sticky;top:0;z-index:100;background:rgba(13,13,26,.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center}
+[data-theme="light"] .hdr{background:rgba(255,245,248,.97)}
+.hdr-logo{font-family:var(--ft);font-size:1.1rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1}
+.hb{width:34px;height:34px;border-radius:50%;background:none;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.88rem;cursor:pointer;color:var(--white);margin-left:8px;text-decoration:none;transition:all .2s}
+.hb:hover{border-color:var(--pink);color:var(--pink)}
+.hero{margin:12px;border-radius:22px;background:var(--grad);padding:28px 20px 24px;position:relative;overflow:hidden;min-height:185px;display:flex;flex-direction:column;justify-content:flex-end}
+.hero::before{content:'';position:absolute;top:-40px;right:-30px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.1)}
+.hero::after{content:'';position:absolute;top:30px;right:40px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.07)}
+.hero-float{position:absolute;top:14px;right:14px;font-size:3.5rem;animation:floatStar 4s ease-in-out infinite;opacity:.35;color:#fff}
+@keyframes floatStar{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-10px) rotate(5deg)}}
+.hero-tag{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:6px;display:block;position:relative;z-index:1}
+.hero h1{font-family:var(--ft);font-size:1.8rem;color:#fff;line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+.hero p{font-size:.85rem;opacity:.85;margin-bottom:15px;position:relative;z-index:1}
+.hero-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);border-radius:50px;font-family:var(--ft);font-size:.78rem;color:#fff;text-decoration:none;position:relative;z-index:1;width:fit-content}
+.section-top{display:flex;justify-content:space-between;align-items:center;padding:14px 14px 10px}
+.section-top h2{font-family:var(--ft);font-size:1rem}
+.section-top a{font-size:.72rem;color:var(--pink);text-decoration:none}
+.cats{overflow:hidden;padding:0 0 12px;position:relative;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 10%,#000 90%,transparent 100%);mask-image:linear-gradient(to right,transparent 0%,#000 10%,#000 90%,transparent 100%)}
+.cats-track{display:flex;gap:8px;width:max-content;will-change:transform}
+.cats-track.no-anim{justify-content:flex-start;width:100%;flex-wrap:wrap}
+/* Quick access */
+.quick-access{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 4px}
+.qa-btn{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 16px;border-radius:16px;text-decoration:none;transition:transform .2s;position:relative;overflow:hidden}
+.qa-btn:active{transform:scale(.97)}
+.qa-btn i{font-size:1.1rem;margin-bottom:4px}
+.qa-btn span:not(.qa-sub){font-family:var(--ft);font-size:.88rem;color:#fff}
+.qa-sub{font-size:.62rem;color:rgba(255,255,255,.7)}
+.qa-promo{background:linear-gradient(135deg,#ff4757 0%,#ffd166 100%);box-shadow:0 4px 16px rgba(255,71,87,.25)}
+.qa-promo i{color:#fff}
+.qa-wish{background:var(--grad);box-shadow:0 4px 16px rgba(255,107,157,.25)}
+.qa-wish i{color:#fff}
+.cat{padding:8px 16px;border-radius:50px;font-size:.8rem;color:#fff;text-decoration:none;white-space:nowrap;flex-shrink:0;font-family:var(--ft);border:none}
+.produtos-scroll{overflow:hidden;padding:0 0 8px;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 5%,#000 95%,transparent 100%);mask-image:linear-gradient(to right,transparent 0%,#000 5%,#000 95%,transparent 100%)}
+.produtos-track{display:flex;gap:10px;width:max-content;will-change:transform}
+.produtos-track.no-anim{justify-content:flex-start;width:100%;flex-wrap:wrap}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;transition:all .25s;position:relative;flex-shrink:0;width:calc(50vw - 24px);min-width:155px;display:block}
+.card:hover{transform:translateY(-2px);border-color:rgba(255,107,157,.3)}
+.card-img{aspect-ratio:1;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:3rem;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover}
+.card-body{padding:8px 10px 12px}
+.card-cat{font-size:.5rem;font-weight:700;color:var(--pink);opacity:.8;text-transform:uppercase;margin-bottom:2px}
+.card-nome{font-family:var(--ft);font-size:.88rem;line-height:1.25;margin-bottom:4px}
+.card-preco{font-family:var(--ft);font-size:.9rem;color:var(--pink)}
+.card-preco-orig{font-size:.68rem;color:var(--muted);text-decoration:line-through;margin-left:4px}
+.tag-destaque{padding:2px 8px;font-family:var(--ft);font-size:.5rem;border-radius:6px;background:var(--grad);color:#fff}
+.tag-promo{padding:2px 8px;font-family:var(--ft);font-size:.5rem;border-radius:6px;background:#ff4757;color:#fff}
+.tag-novo{padding:2px 8px;font-family:var(--ft);font-size:.5rem;border-radius:6px;background:var(--teal);color:#0d0d1a}
+.wish-btn{width:28px;height:28px;border-radius:8px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.15);cursor:pointer;font-size:.72rem;display:flex;align-items:center;justify-content:center;color:#fff;pointer-events:all;z-index:5}
+.wish-btn.active{background:rgba(255,107,157,.3);border-color:rgba(255,107,157,.5);color:var(--pink)}
+.btn-add{position:absolute;bottom:8px;right:8px;width:28px;height:28px;border-radius:50%;background:var(--grad);border:none;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;pointer-events:all}
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:200;padding:8px 12px 10px;display:flex;gap:10px;align-items:center;background:rgba(13,13,26,.97);border-top:1px solid var(--border)}
+[data-theme="light"] .nav{background:rgba(255,245,248,.97)}
+.btn-home-nav{width:42px;height:42px;background:var(--bg2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);text-decoration:none;font-size:1rem;flex-shrink:0}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nl{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 9px;color:var(--muted);font-size:.52rem;text-decoration:none;transition:all .15s;position:relative}
+.nl i{font-size:1.1rem}.nl:hover,.nl.on{color:var(--pink)}
+.nl-badge{position:absolute;top:0;right:2px;background:var(--pink);color:#fff;border-radius:50px;padding:0 4px;font-size:.38rem;font-family:var(--ft);line-height:1.3;min-width:14px;text-align:center;display:none}
+.btn-cart-nav{flex:1;height:42px;background:var(--grad);border:none;border-radius:50px;font-family:var(--ft);font-size:.8rem;color:#fff;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px}
+.spin{width:26px;height:26px;border:3px solid var(--border);border-top-color:var(--pink);border-radius:50%;animation:spin-anim .8s linear infinite;margin:28px auto}
+@keyframes spin-anim{to{transform:rotate(360deg)}}
+.empty-msg{text-align:center;padding:30px;color:var(--muted);font-size:.85rem}
+.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--card);border:1px solid var(--pink);border-radius:16px;padding:10px 18px;font-size:.82rem;font-weight:700;color:var(--pink);z-index:9999;opacity:0;pointer-events:none;transition:transform .4s ease;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}.toast.err{border-color:#ff4757;color:#ff4757}
+.auth-strip{margin:0 12px 12px;padding:13px 14px;border-radius:14px;border:1px solid var(--border);background:var(--card);display:none;align-items:center;gap:12px}
+.as-ico i{font-size:1.5rem;color:var(--pink)}.as-txt{flex:1}.as-txt h4{font-family:var(--ft);font-size:.9rem;margin-bottom:1px}.as-txt p{font-size:.72rem;color:var(--muted)}
+.as-btn{padding:8px 16px;background:var(--grad);border:none;border-radius:50px;font-family:var(--ft);font-size:.72rem;color:#fff;cursor:pointer;white-space:nowrap;text-decoration:none}
+.banner-entrega{margin:16px 12px 12px;border-radius:14px;background:rgba(6,214,160,.06);border:1px solid rgba(6,214,160,.2);padding:14px;display:none;align-items:center;gap:12px}
+.be-ico i{font-size:1.5rem;color:var(--teal);flex-shrink:0}.be-txt{flex:1}.be-txt h4{font-family:var(--ft);font-size:.88rem;color:var(--teal);margin-bottom:2px}.be-txt p{font-size:.74rem;color:var(--muted);line-height:1.4}
+.ptr{display:flex;justify-content:center;align-items:center;overflow:hidden;height:0;transition:height .2s;background:var(--bg)}.ptr.show{height:52px}
+.ptr-spin{width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--pink);border-radius:50%;animation:spin-anim .8s linear infinite}
+.lang-btn{padding:4px 10px;border-radius:50px;border:1px solid var(--border);background:none;font-family:var(--ft);font-size:.65rem;color:var(--muted);cursor:pointer;transition:all .2s}
+.lang-btn:hover{border-color:var(--pink);color:var(--pink)}.lang-btn.active{background:var(--grad);color:#fff;border-color:transparent}
+.pwa-banner{position:fixed;bottom:85px;left:16px;right:16px;z-index:300;background:var(--card);border:1px solid var(--pink);border-radius:16px;padding:14px 16px;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.pwa-banner-inner{display:flex;align-items:center;gap:12px}
+.pwa-ico{width:40px;height:40px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.pwa-txt{flex:1}.pwa-txt strong{display:block;font-family:var(--ft);font-size:.82rem;color:var(--white);margin-bottom:2px}.pwa-txt span{font-size:.68rem;color:var(--muted)}
+.pwa-btn{padding:8px 16px;background:var(--grad);border:none;border-radius:50px;font-family:var(--ft);font-size:.7rem;color:#fff;cursor:pointer;white-space:nowrap}
+.pwa-close{width:28px;height:28px;border-radius:50%;background:none;border:1px solid var(--border);color:var(--muted);cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skel{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;flex-shrink:0;width:calc(50vw - 24px);min-width:155px}
+.skel-inner{background:linear-gradient(90deg,var(--bg2) 25%,var(--border) 50%,var(--bg2) 75%);background-size:800px 100%;animation:shimmer 1.4s infinite linear}
+.skel-img{aspect-ratio:1;width:100%}
+.skel-line{height:10px;margin:10px 10px 6px;border-radius:6px}
+.skel-line.short{width:55%;height:8px;margin-top:0}
+.offline-bar{position:fixed;top:0;left:0;right:0;z-index:9999;background:#ff4757;color:#fff;text-align:center;font-family:var(--ft);font-size:.75rem;padding:7px 12px;transform:translateY(-100%);transition:transform .3s ease}
+.offline-bar.show{transform:translateY(0)}
+.btn-top{position:fixed;bottom:92px;right:14px;z-index:150;width:36px;height:36px;border-radius:50%;background:var(--grad);border:none;color:#fff;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(255,107,157,.4);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;transform:translateY(8px)}
+.btn-top.show{opacity:1;pointer-events:all;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="offline-bar" id="offlineBar">📡 Sem ligação à internet — a tentar reconectar…</div>
+<button class="btn-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Voltar ao topo"><i class="fa-solid fa-chevron-up"></i></button>
+
+<header class="hdr">
+  <div class="hdr-logo" id="hdrLogo">A carregar...</div>
+  <div style="display:flex;gap:4px;margin-right:6px">
+    <button class="lang-btn" id="langToggle" onclick="setIdioma(idioma==='pt'?'en':'pt')">PT</button>
+  </div>
+  <button class="hb" onclick="toggleTheme()"><i class="fa-solid fa-sun" id="temaIco"></i></button>
+  <a href="/Loja/conta.html" class="hb"><i class="fa-solid fa-user"></i></a>
+</header>
+
+<div class="ptr" id="ptr"><div class="ptr-spin"></div></div>
+
+<div class="hero">
+  <div class="hero-float"><i class="fa-solid fa-star"></i></div>
+  <span class="hero-tag" data-i18n="welcome">Bem-vindo</span>
+  <h1 id="heroTitulo">Bem-vindo!</h1>
+  <p id="heroSub"></p>
+  <a href="catalogo.html" class="hero-btn" data-i18n="viewCatalog"><i class="fa-solid fa-store"></i> Ver Catálogo</a>
+</div>
+
+<div class="auth-strip" id="authStrip">
+  <span class="as-ico"><i class="fa-solid fa-user-plus"></i></span>
+  <div class="as-txt"><h4 data-i18n="createAccount">Cria a tua conta</h4><p data-i18n="trackOrders">Acompanha as tuas encomendas em tempo real</p></div>
+  <a href="/Loja/conta.html" class="as-btn" data-i18n="login">Entrar</a>
+</div>
+
+<!-- Acesso rápido: Promoções + Wishlist -->
+<div class="quick-access">
+  <a href="promocoes.html" class="qa-btn qa-promo">
+    <i class="fa-solid fa-percent"></i>
+    <span id="promoCardTitle">Promoções</span>
+    <span class="qa-sub" id="promoCardSub">Ver descontos</span>
+  </a>
+  <a href="wishlist.html" class="qa-btn qa-wish">
+    <i class="fa-solid fa-heart"></i>
+    <span id="wishCardTitle">Wishlist</span>
+    <span class="qa-sub" id="wishCardSub">0 favoritos</span>
+  </a>
+</div>
+
+<div class="section-top">
+  <h2 data-i18n="categories"><i class="fa-solid fa-tags"></i> Categorias</h2>
+</div>
+<div class="cats"><div class="cats-track" id="catsRow"><span class="cat" style="background:var(--border);opacity:.4;min-width:70px">&nbsp;</span><span class="cat" style="background:var(--border);opacity:.4;min-width:90px">&nbsp;</span><span class="cat" style="background:var(--border);opacity:.4;min-width:60px">&nbsp;</span><span class="cat" style="background:var(--border);opacity:.4;min-width:80px">&nbsp;</span></div></div>
+
+<div class="section-top">
+  <h2 data-i18n="featured"><i class="fa-solid fa-fire"></i> Em Destaque</h2>
+</div>
+<div class="produtos-scroll"><div class="produtos-track" id="pgDest"><div class="skel"><div class="skel-inner skel-img"></div><div class="skel-inner skel-line"></div><div class="skel-inner skel-line short"></div></div><div class="skel"><div class="skel-inner skel-img"></div><div class="skel-inner skel-line"></div><div class="skel-inner skel-line short"></div></div><div class="skel"><div class="skel-inner skel-img"></div><div class="skel-inner skel-line"></div><div class="skel-inner skel-line short"></div></div></div></div>
+
+<div class="section-top" id="secNovos" style="display:none">
+  <h2 data-i18n="news"><i class="fa-solid fa-sparkles"></i> Novidades</h2>
+</div>
+<div class="produtos-scroll"><div class="produtos-track" id="pgNovos"></div></div>
+
+<div class="banner-entrega" id="bannerEntrega">
+  <span class="be-ico"><i class="fa-solid fa-truck-fast"></i></span>
+  <div class="be-txt"><h4 data-i18n="delivery">Entrega ao domicílio</h4><p id="beSub">Recebe as tuas encomendas em casa.</p></div>
+</div>
+
+<div class="nav">
+  <a href="/Loja/index.html" class="btn-home-nav" title="Início"><i class="fa-solid fa-house"></i></a>
+  <div class="nav-links">
+    <a href="/Loja/carrinho.html" class="nl" id="nlCarrinho"><i class="fa-solid fa-cart-shopping"></i><span class="nl-badge" id="nlCartN">0</span><span data-i18n="cart">Carrinho</span></a>
+    <a href="/Loja/rastrear.html" class="nl"><i class="fa-solid fa-magnifying-glass"></i><span data-i18n="track">Rastrear</span></a>
+    <a href="/Loja/sobre.html" class="nl"><i class="fa-solid fa-circle-info"></i><span data-i18n="about">Sobre</span></a>
+  </div>
+  <a href="/Loja/catalogo.html" class="btn-cart-nav" id="btnLoja"><i class="fa-solid fa-store"></i> <span data-i18n="catalog">Catálogo</span></a>
+</div>
+<div class="toast" id="toast"></div>
+
+<div id="pwaBanner" class="pwa-banner" style="display:none">
+  <div class="pwa-banner-inner">
+    <div class="pwa-ico">📲</div>
+    <div class="pwa-txt"><strong>Instalar App</strong><span>Adicione ao ecrã principal para acesso rápido</span></div>
+    <button class="pwa-btn" onclick="instalarPWA()">Instalar</button>
+    <button class="pwa-close" onclick="fecharPWABanner()">✕</button>
+  </div>
+</div>
+
+<script>
+var API = window.SITE_API || 'https://SLUG.workers.dev';
+var loja,cats,prods;
+var idioma=localStorage.getItem('idioma')||'pt';
+var pwaPrompt=null;
+
+var catCores=['#ff6b9d','#b14ae8'];
+
+var i18n={
+  pt:{welcome:'Bem-vindo',viewCatalog:'Ver Catálogo',createAccount:'Cria a tua conta',trackOrders:'Acompanha as tuas encomendas em tempo real',login:'Entrar',categories:'Categorias',featured:'Em Destaque',news:'Novidades',delivery:'Entrega ao domicílio',catalog:'Catálogo',track:'Rastrear',about:'Sobre',account:'Conta',cart:'Carrinho',noFeatured:'Sem produtos em destaque.',noProducts:'Sem produtos ainda.'},
+  en:{welcome:'Welcome',viewCatalog:'View Catalog',createAccount:'Create your account',trackOrders:'Track your orders in real time',login:'Login',categories:'Categories',featured:'Featured',news:'New Arrivals',delivery:'Home Delivery',catalog:'Catalog',track:'Track',about:'About',account:'Account',cart:'Cart',noFeatured:'No featured products.',noProducts:'No products yet.'}
+};
+function t(key){return (i18n[idioma]&&i18n[idioma][key])||i18n.pt[key]||key;}
+
+function setIdioma(lang){
+  idioma=lang;localStorage.setItem('idioma',lang);
+  document.getElementById('langToggle').textContent=lang==='pt'?'EN':'PT';
+  aplicarIdioma();
+}
+function aplicarIdioma(){
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var key=el.getAttribute('data-i18n');
+    var icon=el.querySelector('i.fa-solid,i.fa-regular,i.fa-brands');
+    var iconHtml=icon?icon.outerHTML:'';
+    el.innerHTML=iconHtml+' '+t(key);
+  });
+  if(prods&&prods.length){renderDestaques();renderNovos();}
+}
+
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();pwaPrompt=e;if(!localStorage.getItem('pwa_banner_fechado')){document.getElementById('pwaBanner').style.display='block';}});
+function instalarPWA(){if(pwaPrompt){pwaPrompt.prompt();pwaPrompt.userChoice.then(function(r){if(r.outcome==='accepted'){document.getElementById('pwaBanner').style.display='none';}});}else{document.getElementById('pwaBanner').style.display='none';localStorage.setItem('pwa_banner_fechado','1');}}
+function fecharPWABanner(){document.getElementById('pwaBanner').style.display='none';localStorage.setItem('pwa_banner_fechado','1');}
+
+function toggleTheme(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('tema',t);document.getElementById('temaIco').className=t==='dark'?'fa-solid fa-sun':'fa-solid fa-moon';}
+function getCarrinho(){try{return JSON.parse(localStorage.getItem('cf_carrinho')||'[]');}catch(e){return[];}}
+function salvarCarrinho(c){localStorage.setItem('cf_carrinho',JSON.stringify(c));}
+function qtdCarrinho(){return getCarrinho().reduce(function(s,i){return s+(i.quantidade||1);},0);}
+function getCliente(){try{return JSON.parse(localStorage.getItem('cf_cliente')||'null');}catch(e){return null;}}
+function getWishlist(){try{return JSON.parse(localStorage.getItem('cf_wl')||'[]');}catch(e){return[];}}
+function kz(v){if(v==null)return'—';return'Kz '+Number(v).toLocaleString('pt');}
+function toast(msg,t){var el=document.getElementById('toast');if(!el)return;el.textContent=msg;el.className='toast show '+(t||'ok');setTimeout(function(){el.classList.remove('show');},3000);}
+function atualizarBtnCart(){var q=qtdCarrinho();var nlN=document.getElementById('nlCartN');if(nlN){nlN.textContent=q;nlN.style.display=q>0?'inline':'none';}}
+
+function toggleWish(id,btn){var wl=getWishlist();var added=!wl.includes(String(id));if(added){wl.push(String(id));btn.classList.add('active');btn.innerHTML='<i class="fa-solid fa-heart"></i>';toast(idioma==='en'?'Added to wishlist!':'Adicionado à wishlist!');}else{wl=wl.filter(function(x){return x!==String(id);});btn.classList.remove('active');btn.innerHTML='<i class="fa-regular fa-heart"></i>';toast(idioma==='en'?'Removed from wishlist':'Removido da wishlist');}localStorage.setItem('cf_wl',JSON.stringify(wl));}
+
+async function carregar(){
+  try{var rL=await fetch(API + '/api/loja/publica');loja=await rL.json();var rC=await fetch(API+'/api/categorias');cats=await rC.json();var rP=await fetch(API+'/api/produtos');prods=await rP.json();}catch(e){loja={};cats=[];prods=[];}
+  var siteUrl='https://impersilvatech.github.io/Loja/';
+  document.getElementById('pageTitle').textContent=loja.nome||'Loja';document.title=loja.nome||'Loja';
+  if(loja.meta_descricao){document.getElementById('metaDesc').setAttribute('content',loja.meta_descricao);document.getElementById('ogDesc').setAttribute('content',loja.meta_descricao);document.getElementById('twDesc').setAttribute('content',loja.meta_descricao);}
+  if(loja.palavras_chave){document.getElementById('metaKw').setAttribute('content',loja.palavras_chave);}
+  document.getElementById('hdrLogo').textContent=loja.nome||'Loja';
+  document.getElementById('heroTitulo').innerHTML=(idioma==='en'?'Welcome to<br><span style="font-style:italic">':'Bem-vindo à<br><span style="font-style:italic">')+(loja.nome||'Loja')+'</span>';
+  if(loja.slogan)document.getElementById('heroSub').textContent=idioma==='en'?(loja.slogan_en||loja.slogan):loja.slogan;
+  if(!getCliente())document.getElementById('authStrip').style.display='flex';
+  if(loja.entrega_ativa){var b=document.getElementById('bannerEntrega');b.style.display='flex';if(loja.entrega_gratis_a>0)document.getElementById('beSub').textContent=(idioma==='en'?'Free from ':'Grátis a partir de ')+kz(loja.entrega_gratis_a)+'.';else if(loja.entrega_prazo)document.getElementById('beSub').textContent=(idioma==='en'?'Delivery time: ':'Prazo: ')+loja.entrega_prazo;}
+  document.getElementById('langToggle').textContent=idioma==='pt'?'EN':'PT';
+  aplicarIdioma();buildCats();renderDestaques();renderNovos();atualizarBtnCart();initPTR();
+  /* og:image dinâmica: usa imagem do 1.º produto em destaque */
+  var destImg=prods.find(function(p){return(p.destaque==1||p.destaque===true)&&p.imagem_url;});
+  if(destImg)document.querySelector('meta[property="og:image"]').setAttribute('content',destImg.imagem_url);
+  /* Atualizar cards de acesso rápido */
+  var wlCount=JSON.parse(localStorage.getItem('cf_wl')||'[]').length;
+  var wishSub=document.getElementById('wishCardSub');
+  if(wishSub)wishSub.textContent=idioma==='en'?wlCount+' favourites':wlCount+' favoritos';
+  var promoCount=prods.filter(function(p){return p.preco_original>p.preco_base&&p.disponivel!==0;}).length;
+  var promoSub=document.getElementById('promoCardSub');
+  if(promoSub)promoSub.textContent=promoCount>0?(promoCount+(idioma==='en'?' active deals':' ofertas activas')):(idioma==='en'?'See discounts':'Ver descontos');
+  if(document.getElementById('promoCardTitle'))document.getElementById('promoCardTitle').textContent=idioma==='en'?'Promotions':'Promoções';
+
+  setInterval(async function(){
+    try {
+      var [rL, rC, rP] = await Promise.all([fetch(API+'/api/loja'),fetch(API+'/api/categorias'),fetch(API+'/api/produtos')]);
+      var novaLoja=await rL.json(),novasCats=await rC.json(),novosProds=await rP.json();
+      if(JSON.stringify(novaLoja)!==JSON.stringify(loja)||JSON.stringify(novasCats)!==JSON.stringify(cats)||JSON.stringify(novosProds)!==JSON.stringify(prods)){
+        if(JSON.stringify(novaLoja)!==JSON.stringify(loja))loja=novaLoja;
+        if(JSON.stringify(novasCats)!==JSON.stringify(cats))cats=novasCats;
+        if(JSON.stringify(novosProds)!==JSON.stringify(prods))prods=novosProds;
+        buildCats();renderDestaques();renderNovos();atualizarBtnCart();
+      }
+    } catch(e) {}
+  }, 15000);
+}
+
+function buildCats(){
+  var row=document.getElementById('catsRow');
+  if(!cats.length){row.innerHTML='';return;}
+  var html1=cats.map(function(c,i){
+    var cor=catCores[i%catCores.length];
+    return'<a href="catalogo.html?cat='+c.slug+'" class="cat" style="background:'+cor+'">'+(idioma==='en'&&c.nome_en?c.nome_en:c.nome)+'</a>';
+  }).join('');
+  /* Offset da 2ª cópia para continuar a alternância sem repetir cor no ponto de junção */
+  var offset=cats.length%catCores.length;
+  var html2=cats.map(function(c,i){
+    var cor=catCores[(i+offset)%catCores.length];
+    return'<a href="catalogo.html?cat='+c.slug+'" class="cat" style="background:'+cor+'">'+(idioma==='en'&&c.nome_en?c.nome_en:c.nome)+'</a>';
+  }).join('');
+  row.innerHTML=html1+html2;
+  var n=row.children.length;
+  _mq.catsRow.half=n>=2?row.children[Math.floor(n/2)].offsetLeft-row.children[0].offsetLeft:0;
+  _mq.catsRow.pos=0;
+}
+
+function renderProds(trackId,lista){
+  var track=document.getElementById(trackId);
+  if(!lista.length){track.innerHTML='';track.classList.add('no-anim');return;}
+  if(lista.length<=2){track.classList.add('no-anim');track.innerHTML=lista.map(function(p){return cardHtml(p);}).join('');}
+  else{
+    track.classList.remove('no-anim');
+    var html=lista.map(function(p){return cardHtml(p);}).join('');
+    track.innerHTML=html+html;
+    var n=track.children.length;
+    var half=n>=2?track.children[Math.floor(n/2)].offsetLeft-track.children[0].offsetLeft:0;
+    _mq[trackId].half=half;
+    /* dir>0 (rola à direita): começa em -half e sobe para 0 */
+    _mq[trackId].pos=_mq[trackId].dir>0?-half:0;
+  }
+}
+
+function renderDestaques(){
+  var destaques=prods.filter(function(p){return p.destaque==1||p.destaque===true;});
+  if(!destaques.length){var t=document.getElementById('pgDest');t.innerHTML='<p class="empty-msg">'+t('noFeatured')+'</p>';t.classList.add('no-anim');return;}
+  renderProds('pgDest',destaques.slice(0,8));
+}
+
+function renderNovos(){
+  var nov=prods.filter(function(p){return p.etiqueta==='novo';});
+  if(!nov.length){document.getElementById('secNovos').style.display='none';return;}
+  document.getElementById('secNovos').style.display='flex';
+  renderProds('pgNovos',nov.slice(0,6));
+}
+
+function cardHtml(p){
+  var cat=cats.find(function(c){return c.id===p.categoria_id;});
+  var preco=p.preco_base||p.preco||0,precoOrig=p.preco_original||0;
+  var pct=precoOrig>preco?Math.round((1-preco/precoOrig)*100):0;
+  var isNew=p.etiqueta==='novo'||(p.criado_em&&(Date.now()-new Date(p.criado_em).getTime())<7*24*60*60*1000);
+  var img=p.imagem_url?'<img src="'+p.imagem_url+'" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML=\'<i class=fa-solid fa-image style=font-size:3rem;color:var(--muted)></i>\'">':'<i class="fa-solid fa-image" style="font-size:3rem;color:var(--muted)"></i>';
+  var wished=getWishlist().indexOf(String(p.id))>=0;
+  var tagHtml='';
+  if(p.destaque)tagHtml='<span class="tag-destaque">'+(idioma==='en'?'Featured':'Destaque')+'</span>';
+  else if(pct>0)tagHtml='<span class="tag-promo">-'+pct+'%</span>';
+  else if(isNew)tagHtml='<span class="tag-novo">'+(idioma==='en'?'New':'Novo')+'</span>';
+  var nome=(idioma==='en'&&p.nome_en?p.nome_en:p.nome);
+  var catNome=cat?(idioma==='en'&&cat.nome_en?cat.nome_en:cat.nome):'';
+  return'<a href="/Loja/produto.html?id='+p.id+'" class="card"><div class="card-img">'+img+'</div><div style="position:absolute;top:7px;left:7px;right:7px;display:flex;justify-content:space-between;align-items:flex-start;z-index:1">'+tagHtml+'<button class="wish-btn'+(wished?' active':'')+'" onclick="event.preventDefault();event.stopPropagation();toggleWish('+p.id+',this)">'+(wished?'<i class="fa-solid fa-heart"></i>':'<i class="fa-regular fa-heart"></i>')+'</button></div><div class="card-body"><div class="card-cat">'+catNome+'</div><div class="card-nome">'+nome+'</div><div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap"><span class="card-preco">'+(preco>0?kz(preco):(idioma==='en'?'Quote':'Orçamento'))+'</span>'+(pct>0?'<span class="card-preco-orig">'+kz(precoOrig)+'</span>':'')+'</div></div>'+(p.disponivel!==0&&preco>0?'<button class="btn-add" onclick="event.preventDefault();event.stopPropagation();addCart('+p.id+')"><i class="fa-solid fa-plus"></i></button>':'')+'</a>';
+}
+
+function addCart(id){var cart=getCarrinho();if(cart.findIndex(function(i){return i.produto_id===id;})>=0){toast(idioma==='en'?'Already added!':'Já adicionado!','err');return;}var p=prods.find(function(x){return x.id===id;});if(!p)return;cart.push({chave:''+id+'-'+Date.now(),produto_id:id,nome:p.nome,preco:p.preco_base,quantidade:1,imagem:p.imagem_url||'',nota:''});salvarCarrinho(cart);atualizarBtnCart();toast(p.nome+' '+(idioma==='en'?'added!':'adicionado!'));}
+
+function initPTR(){
+  var sy=0,act=false;
+  document.addEventListener('touchstart',function(e){if(window.scrollY===0)sy=e.touches[0].clientY;},{passive:true});
+  document.addEventListener('touchmove',function(e){if(window.scrollY>0||act)return;if(e.touches[0].clientY-sy>55){act=true;document.getElementById('ptr').classList.add('show');}},{passive:true});
+  document.addEventListener('touchend',async function(){if(!act)return;act=false;try{var rL=await fetch(API+'/api/loja');loja=await rL.json();var rC=await fetch(API+'/api/categorias');cats=await rC.json();var rP=await fetch(API+'/api/produtos');prods=await rP.json();}catch(e){}buildCats();renderDestaques();renderNovos();atualizarBtnCart();document.getElementById('ptr').classList.remove('show');},{passive:true});
+}
+
+document.getElementById('langToggle').textContent=idioma==='pt'?'EN':'PT';
+
+/* ── Scroll infinito via RAF ── */
+var _mq={
+  catsRow:{pos:0,   speed:0.42, half:0, dir:-1},
+  pgDest: {pos:0,   speed:0.30, half:0, dir:1},
+  pgNovos:{pos:0,   speed:0.30, half:0, dir:1}
+};
+(function _mqLoop(){
+  Object.keys(_mq).forEach(function(id){
+    var el=document.getElementById(id);
+    var s=_mq[id];
+    if(!el||!s.half||el.classList.contains('no-anim'))return;
+    s.pos+=s.dir*s.speed;
+    /* reset invisível: preserva overshoot de subpixel */
+    if(s.dir<0&&s.pos<=-s.half)s.pos+=s.half;
+    if(s.dir>0&&s.pos>=0)s.pos-=s.half;
+    el.style.transform='translateX('+s.pos+'px)';
+  });
+  requestAnimationFrame(_mqLoop);
+})();
+
+/* ── Offline banner ── */
+function setOnline(on){document.getElementById('offlineBar').classList.toggle('show',!on);}
+window.addEventListener('offline',function(){setOnline(false);});
+window.addEventListener('online',function(){setOnline(true);});
+setOnline(navigator.onLine);
+
+/* ── Voltar ao topo ── */
+window.addEventListener('scroll',function(){document.getElementById('btnTop').classList.toggle('show',window.scrollY>220);},{passive:true});
+
+/* Capturar código de referido da URL */
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var ref=params.get('ref');
+  if(ref){
+    localStorage.setItem('cf_ref_code',ref);
+    /* Incrementar contador do referidor */
+    var uses=parseInt(localStorage.getItem('cf_ref_uses')||'0');
+    localStorage.setItem('cf_ref_uses',String(uses+1));
+    window.history.replaceState({},document.title,window.location.pathname);
+  }
+})();
+
+carregar();
+</script>
+</body>
+</html>
