@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="pt-AO" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#0d0d1a"/>
+<title>Pedido Personalizado</title>
+<script>
+(function(){
+  var t=localStorage.getItem('tema')||'dark';
+  var l=localStorage.getItem('idioma')||'pt';
+  document.documentElement.setAttribute('data-theme',t);
+  document.documentElement.setAttribute('lang',l==='en'?'en':'pt-AO');
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(function(){});
+})();
+</script>
+<script src="config.js"></script>
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0d0d1a;--bg2:#14142b;--card:#1a1a32;--border:#2a2a4a;--pink:#ff6b9d;--purple:#b14ae8;--teal:#06d6a0;--yellow:#ffd166;--red:#ff4757;--white:#f0f0ff;--muted:#9898bb;--ft:'Fredoka One',cursive;--fb:'Nunito',sans-serif;--grad:linear-gradient(135deg,#ff6b9d,#b14ae8)}
+[data-theme="light"]{--bg:#fff5f8;--bg2:#fff;--card:#fff;--border:#f0d6e8;--white:#1a0a2e;--muted:#7a5a8a;--pink:#d4437d;--purple:#7a2fb0;--teal:#048a65;--red:#d63547;--yellow:#a07800}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--white);min-height:100vh;padding-bottom:90px}
+.hdr{position:sticky;top:0;z-index:100;background:rgba(13,13,26,.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:10px}
+[data-theme="light"] .hdr{background:rgba(255,245,248,.97)}
+.btn-bk{width:34px;height:34px;border-radius:50%;background:none;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.88rem;cursor:pointer;color:var(--white)}
+.hdr-nome{font-family:var(--ft);font-size:1.05rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;text-align:center}
+.wiz-progress{padding:12px 14px 0}
+.wiz-steps{display:flex;align-items:flex-start}
+.ws{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+.ws-dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-family:var(--ft);color:var(--muted);transition:all .3s;z-index:1;position:relative}
+.ws.done .ws-dot{background:var(--grad);border-color:transparent;color:#fff}
+.ws.active .ws-dot{border-color:var(--pink);color:var(--pink);box-shadow:0 0 0 4px rgba(255,107,157,.15)}
+.ws-line{position:absolute;top:12px;left:50%;right:-50%;height:2px;background:var(--border);z-index:0;transition:background .3s}
+.ws:last-child .ws-line{display:none}
+.ws.done .ws-line{background:var(--pink)}
+.ws-lbl{font-size:.48rem;color:var(--muted);margin-top:5px;text-align:center;font-weight:800;text-transform:uppercase;letter-spacing:.3px}
+.ws.active .ws-lbl,.ws.done .ws-lbl{color:var(--pink)}
+.ctn{padding:0 14px;max-width:540px;margin:0 auto}
+.step{display:none;animation:fadeUp .3s ease both}
+.step.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.step-hdr{padding:18px 0 14px;text-align:center}
+.step-hdr-ico{width:52px;height:52px;border-radius:16px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fff;margin:0 auto 10px;box-shadow:0 6px 20px rgba(255,107,157,.3)}
+.step-hdr h2{font-family:var(--ft);font-size:1.15rem;margin-bottom:4px}
+.step-hdr p{font-size:.76rem;color:var(--muted);line-height:1.5}
+.tipo-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+.tipo-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:12px 10px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .2s}
+.tipo-card:hover{border-color:rgba(255,107,157,.4)}
+.tipo-card.on{border-color:var(--pink);background:rgba(255,107,157,.07)}
+.tipo-card-ico{width:36px;height:36px;border-radius:10px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--pink);flex-shrink:0;transition:all .2s}
+.tipo-card.on .tipo-card-ico{background:var(--grad);border-color:transparent;color:#fff}
+.tipo-card-lbl{font-family:var(--ft);font-size:.82rem;margin-bottom:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tipo-card-sub{font-size:.6rem;color:var(--muted)}
+.fg{margin-bottom:11px}
+.fg label{display:block;font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
+.fi{width:100%;padding:11px 13px;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;font-family:var(--fb);font-size:.86rem;color:var(--white);outline:none;transition:border-color .2s;resize:none}
+.fi:focus{border-color:var(--pink)}
+.fi::placeholder{color:var(--muted)}
+select.fi{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239898bb' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px}
+.chip{padding:7px 14px;border-radius:50px;border:1.5px solid var(--border);background:none;font-family:var(--fb);font-size:.76rem;color:var(--muted);cursor:pointer;transition:all .2s}
+.chip:hover{border-color:var(--pink);color:var(--pink)}
+.chip.on{background:var(--grad);color:#fff;border-color:transparent;font-weight:700}
+.stepper{display:inline-flex;align-items:center;gap:10px;background:var(--bg2);border:1.5px solid var(--border);border-radius:50px;padding:5px 12px}
+.stepper button{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:none;color:var(--white);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.stepper button:hover{background:var(--pink);border-color:var(--pink);color:#fff}
+.stepper span{font-family:var(--ft);font-size:1.05rem;min-width:26px;text-align:center}
+.upload-area{border:2px dashed var(--border);border-radius:14px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:11px;position:relative;overflow:hidden}
+.upload-area:hover{border-color:var(--pink);background:rgba(255,107,157,.03)}
+.upload-area.has-img{border-style:solid;border-color:var(--teal);background:rgba(6,214,160,.04)}
+.upload-area input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2}
+.upload-placeholder{pointer-events:none}
+.upload-area.has-img .upload-placeholder{display:none}
+.upload-preview{display:none;max-height:140px;border-radius:8px;margin:0 auto;pointer-events:none}
+.upload-area.has-img .upload-preview{display:block}
+.upload-ico{font-size:1.6rem;color:var(--muted);margin-bottom:6px}
+.upload-lbl{font-size:.78rem;font-weight:700;color:var(--muted)}
+.upload-sub{font-size:.62rem;color:var(--muted);margin-top:3px}
+.urg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:11px}
+.urg-card{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .2s}
+.urg-card:hover{border-color:var(--pink)}
+.urg-card.on{border-color:var(--yellow);background:rgba(255,209,102,.07)}
+.urg-card i{display:block;font-size:1.1rem;margin-bottom:5px;color:var(--muted)}
+.urg-card.on i{color:var(--yellow)}
+.urg-card span{display:block;font-family:var(--ft);font-size:.75rem;margin-bottom:2px}
+.urg-card small{display:block;font-size:.56rem;color:var(--muted)}
+.resumo-card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:12px}
+.resumo-grad{background:var(--grad);padding:14px 16px;display:flex;align-items:center;gap:8px}
+.resumo-grad-title{font-family:var(--ft);font-size:1rem;color:#fff}
+.resumo-body{padding:12px 14px}
+.resumo-row{display:flex;justify-content:space-between;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border);font-size:.8rem;gap:8px}
+.resumo-row:last-child{border-bottom:none}
+.resumo-row-lbl{color:var(--muted);flex-shrink:0;min-width:90px}
+.resumo-row-val{text-align:right;font-weight:700;word-break:break-word}
+.resumo-img{width:56px;height:56px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0}
+.info-box{background:rgba(255,209,102,.07);border:1px solid rgba(255,209,102,.2);border-radius:10px;padding:10px 12px;font-size:.75rem;color:var(--muted);display:flex;gap:9px;align-items:flex-start;margin-bottom:11px}
+.info-box i{color:var(--yellow);flex-shrink:0;margin-top:1px}
+.nav-btns{display:flex;gap:8px;margin:6px 0 14px}
+.btn-prev{flex-shrink:0;padding:12px 18px;background:none;border:1.5px solid var(--border);border-radius:50px;font-family:var(--ft);font-size:.8rem;color:var(--muted);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.btn-prev:hover{border-color:var(--pink);color:var(--pink)}
+.btn-next{flex:1;padding:13px;background:var(--grad);border:none;border-radius:50px;font-family:var(--ft);font-size:.88rem;color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,157,.3);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-next:active{transform:scale(.97)}
+.btn-submit{width:100%;padding:15px;background:var(--grad);border:none;border-radius:50px;font-family:var(--ft);font-size:.95rem;color:#fff;cursor:pointer;box-shadow:0 6px 20px rgba(255,107,157,.3);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px}
+.btn-submit:disabled{opacity:.5;pointer-events:none}
+.msg-err{font-size:.75rem;color:var(--red);text-align:center;padding:6px 0;min-height:22px}
+.success-box{text-align:center;padding:40px 20px}
+.success-ico{width:70px;height:70px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#fff;margin:0 auto 16px;box-shadow:0 8px 28px rgba(255,107,157,.4)}
+.success-box h2{font-family:var(--ft);font-size:1.3rem;margin-bottom:6px}
+.success-box p{font-size:.82rem;color:var(--muted);line-height:1.6;margin-bottom:20px}
+.success-ref{font-family:var(--ft);font-size:1.1rem;color:var(--pink);background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 18px;display:inline-block;margin-bottom:20px}
+.btn-track{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:var(--grad);border:none;border-radius:50px;font-family:var(--ft);font-size:.88rem;color:#fff;cursor:pointer;margin-bottom:8px;text-decoration:none;box-shadow:0 4px 14px rgba(255,107,157,.3)}
+.btn-outline-full{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:none;border:1.5px solid var(--border);border-radius:50px;font-family:var(--ft);font-size:.82rem;color:var(--muted);cursor:pointer;text-decoration:none}
+.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px 18px;font-size:.82rem;font-weight:700;color:var(--white);z-index:9999;opacity:0;pointer-events:none;transition:transform .35s,opacity .35s;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.err{border-color:var(--red);color:var(--red)}
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:200;padding:6px 10px 8px;display:flex;gap:8px;align-items:center;background:rgba(13,13,26,.97);border-top:1px solid var(--border)}
+[data-theme="light"] .nav{background:rgba(255,245,248,.97)}
+.btn-home-nav{width:38px;height:38px;background:var(--bg2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);text-decoration:none;font-size:.9rem;flex-shrink:0}
+.btn-cat-nav{flex:1;height:38px;border:none;background:var(--grad);border-radius:50px;font-family:var(--ft);font-size:.78rem;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;box-shadow:0 4px 14px rgba(255,107,157,.3)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <button class="btn-bk" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
+  <div class="hdr-nome" id="hdrNome">Pedido Personalizado</div>
+  <div style="width:34px"></div>
+</header>
+
+<div class="wiz-progress">
+  <div class="wiz-steps">
+    <div class="ws active"><div class="ws-dot">1</div><div class="ws-line"></div><div class="ws-lbl" id="lbl0">Produto</div></div>
+    <div class="ws"><div class="ws-dot">2</div><div class="ws-line"></div><div class="ws-lbl" id="lbl1">Detalhes</div></div>
+    <div class="ws"><div class="ws-dot">3</div><div class="ws-line"></div><div class="ws-lbl" id="lbl2">Visual</div></div>
+    <div class="ws"><div class="ws-dot">4</div><div class="ws-line"></div><div class="ws-lbl" id="lbl3">Entrega</div></div>
+    <div class="ws"><div class="ws-dot">5</div><div class="ws-line"></div><div class="ws-lbl" id="lbl4">Resumo</div></div>
+  </div>
+</div>
+
+<div class="ctn">
+
+<div class="step active" id="step0">
+  <div class="step-hdr">
+    <div class="step-hdr-ico"><i class="fa-solid fa-star"></i></div>
+    <h2 id="s0title">O que queres encomendar?</h2>
+    <p id="s0desc">Escolhe o tipo de produto personalizado</p>
+  </div>
+  <div class="tipo-grid" id="tipoGrid"></div>
+  <div class="fg">
+    <label id="s0outroLbl">Outro produto — descreve aqui</label>
+    <textarea class="fi" id="tipoOutro" rows="2" placeholder="Ex: Conjunto de churros com cobertura de chocolate e caramelo..."></textarea>
+  </div>
+  <div class="nav-btns">
+    <button class="btn-next" onclick="avancar(0)"><span id="s0next">Próximo</span> <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<div class="step" id="step1">
+  <div class="step-hdr">
+    <div class="step-hdr-ico"><i class="fa-solid fa-sliders"></i></div>
+    <h2 id="s1title">Detalhes do Pedido</h2>
+    <p id="s1desc">Especifica o teu produto ao máximo</p>
+  </div>
+  <div id="camposDinamicos"></div>
+  <div class="nav-btns">
+    <button class="btn-prev" onclick="recuar(1)"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="btn-next" onclick="avancar(1)"><span id="s1next">Próximo</span> <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<div class="step" id="step2">
+  <div class="step-hdr">
+    <div class="step-hdr-ico"><i class="fa-solid fa-palette"></i></div>
+    <h2 id="s2title">Cores e Estilo</h2>
+    <p id="s2desc">Define a identidade visual do teu pedido</p>
+  </div>
+  <div class="fg"><label id="s2coresLbl">Cores principais</label><div class="chips" id="coresChips"></div></div>
+  <div class="fg"><label id="s2acabLbl">Acabamento / Estilo</label><div class="chips" id="acabChips"></div></div>
+  <div class="fg">
+    <label id="s2notasLbl">Outros detalhes visuais</label>
+    <textarea class="fi" id="fNotas" rows="3" placeholder="Ex: Flores de açúcar, pérolas douradas, acabamento rústico, sem glúten..."></textarea>
+  </div>
+  <div class="fg">
+    <label id="s2refLbl">Foto de referência / inspiração</label>
+    <div class="upload-area" id="uploadArea">
+      <input type="file" accept="image/*" onchange="carregarImagem(this)"/>
+      <div class="upload-placeholder">
+        <div class="upload-ico"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+        <div class="upload-lbl" id="uploadLbl">Toque para enviar foto</div>
+        <div class="upload-sub" id="uploadSub">JPG, PNG, HEIC — máx. 10MB</div>
+      </div>
+      <img class="upload-preview" id="uploadPreview" src="" alt=""/>
+    </div>
+  </div>
+  <div class="nav-btns">
+    <button class="btn-prev" onclick="recuar(2)"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="btn-next" onclick="avancar(2)"><span id="s2next">Próximo</span> <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<div class="step" id="step3">
+  <div class="step-hdr">
+    <div class="step-hdr-ico"><i class="fa-solid fa-calendar-check"></i></div>
+    <h2 id="s3title">Entrega e Contacto</h2>
+    <p id="s3desc">Quando e como queres receber</p>
+  </div>
+  <div class="fg"><label id="s3urgLbl">Urgência</label><div class="urg-grid" id="urgGrid"></div></div>
+  <div class="fg">
+    <label id="s3dateLbl">Data de entrega preferida *</label>
+    <input class="fi" type="date" id="fData"/>
+  </div>
+  <div class="fg" id="lojaEntradaWrap" style="display:none">
+    <label id="s3entLbl">Tipo de entrega</label>
+    <select class="fi" id="fTipoEnt">
+      <option value="levantamento" id="optLevant">Levantamento na loja</option>
+      <option value="entrega" id="optEntrega">Entrega ao domicílio</option>
+    </select>
+  </div>
+  <div class="fg"><label id="s3nomeLbl">O teu nome *</label><input class="fi" type="text" id="fNomeCli" placeholder="Nome completo"/></div>
+  <div class="fg"><label id="s3telLbl">Telefone *</label><input class="fi" type="tel" id="fTel" placeholder="+244 9XX XXX XXX" oninput="formatarTel(this)"/></div>
+  <div class="fg"><label id="s3emailLbl">Email <span style="font-size:.55rem;opacity:.6">(opcional)</span></label><input class="fi" type="email" id="fEmail" placeholder="email@..."/></div>
+  <div class="info-box"><i class="fa-solid fa-circle-info"></i><span id="infoOrcamento">O orçamento final será confirmado pela nossa equipa antes da produção.</span></div>
+  <div class="nav-btns">
+    <button class="btn-prev" onclick="recuar(3)"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="btn-next" onclick="avancar(3)"><span id="s3next">Ver Resumo</span> <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<div class="step" id="step4">
+  <div class="step-hdr">
+    <div class="step-hdr-ico"><i class="fa-solid fa-check"></i></div>
+    <h2 id="s4title">Confirmar Pedido</h2>
+    <p id="s4desc">Revê os detalhes e envia o pedido</p>
+  </div>
+  <div class="resumo-card">
+    <div class="resumo-grad"><i class="fa-solid fa-list-check" style="color:#fff"></i><div class="resumo-grad-title" id="resumoTitle" style="margin-left:8px">Resumo do Pedido</div></div>
+    <div class="resumo-body" id="resumoBody"></div>
+  </div>
+  <button class="btn-submit" id="btnSubmit" onclick="submeter()">
+    <i class="fa-solid fa-paper-plane"></i> <span id="btnSubmitTxt">Enviar Pedido</span>
+  </button>
+  <p class="msg-err" id="msgErr"></p>
+  <button class="btn-prev" style="width:100%;margin-bottom:8px;justify-content:center" onclick="recuar(4)">
+    <i class="fa-solid fa-pen"></i> <span id="btnEditarTxt">Editar pedido</span>
+  </button>
+</div>
+
+<div class="step" id="step5">
+  <div class="success-box">
+    <div class="success-ico"><i class="fa-solid fa-check"></i></div>
+    <h2 id="successTitle">Pedido Enviado!</h2>
+    <p id="successDesc">O teu pedido personalizado foi recebido. A nossa equipa irá analisar e entrar em contacto em breve.</p>
+    <div class="success-ref" id="successRef"></div>
+    <a href="rastrear.html" class="btn-track" id="btnTrack">
+      <i class="fa-solid fa-magnifying-glass"></i> <span id="btnTrackTxt">Rastrear Encomenda</span>
+    </a>
+    <a href="catalogo.html" class="btn-outline-full">
+      <i class="fa-solid fa-store"></i> <span id="btnCatTxt2">Ver Catálogo</span>
+    </a>
+  </div>
+</div>
+
+</div>
+
+<div class="nav">
+  <a href="index.html" class="btn-home-nav"><i class="fa-solid fa-house"></i></a>
+  <a href="catalogo.html" class="btn-cat-nav"><i class="fa-solid fa-store"></i> <span id="ver catálogo">Ver Catálogo</span></a>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+var API = window.SITE_API || 'https://SLUG.workers.dev';
+var loja={};
+var idioma=localStorage.getItem('idioma')||'pt';
+var estado={passo:0,tipoId:'',tipoLabel:'',tipoOutro:'',campos:{},quantidade:1,cores:[],acabamento:'',notas:'',refImg:'',urgencia:'normal',dataEntrega:'',tipoEnt:'levantamento',nome:'',telefone:'',email:''};
+
+var TIPOS_PT=[
+  {id:'bolo',ico:'fa-solid fa-cake-candles',lbl:'Bolo',sub:'Aniversário, batizado, casamento'},
+  {id:'cupcakes',ico:'fa-solid fa-mug-hot',lbl:'Cupcakes',sub:'Conjunto personalizado'},
+  {id:'bolo-andares',ico:'fa-solid fa-layer-group',lbl:'Bolo de Andares',sub:'Casamentos, festas grandes'},
+  {id:'mini-bolos',ico:'fa-solid fa-cubes-stacked',lbl:'Mini Bolos',sub:'Individuais temáticos'},
+  {id:'donuts',ico:'fa-solid fa-circle-dot',lbl:'Donuts',sub:'Personalizados e decorados'},
+  {id:'cookies',ico:'fa-solid fa-cookie',lbl:'Cookies',sub:'Recheadas ou decoradas'},
+  {id:'cake-pops',ico:'fa-solid fa-ice-cream',lbl:'Cake Pops',sub:'Para festas e eventos'},
+  {id:'churros',ico:'fa-solid fa-bread-slice',lbl:'Churros',sub:'Com recheio e cobertura'},
+  {id:'crepes',ico:'fa-solid fa-circle',lbl:'Crepes',sub:'Doces ou salgados'},
+  {id:'waffles',ico:'fa-solid fa-border-all',lbl:'Waffles',sub:'Com toppings personalizados'},
+  {id:'torta',ico:'fa-solid fa-chart-pie',lbl:'Torta / Tarte',sub:'Doce ou salgada'},
+  {id:'outro',ico:'fa-solid fa-pen-fancy',lbl:'Outro',sub:'Descreve abaixo'}
+];
+var TIPOS_EN=[
+  {id:'bolo',ico:'fa-solid fa-cake-candles',lbl:'Cake',sub:'Birthday, baptism, wedding'},
+  {id:'cupcakes',ico:'fa-solid fa-mug-hot',lbl:'Cupcakes',sub:'Custom set'},
+  {id:'bolo-andares',ico:'fa-solid fa-layer-group',lbl:'Tiered Cake',sub:'Weddings, large events'},
+  {id:'mini-bolos',ico:'fa-solid fa-cubes-stacked',lbl:'Mini Cakes',sub:'Individual themed'},
+  {id:'donuts',ico:'fa-solid fa-circle-dot',lbl:'Donuts',sub:'Personalized and decorated'},
+  {id:'cookies',ico:'fa-solid fa-cookie',lbl:'Cookies',sub:'Filled or decorated'},
+  {id:'cake-pops',ico:'fa-solid fa-ice-cream',lbl:'Cake Pops',sub:'For parties and events'},
+  {id:'churros',ico:'fa-solid fa-bread-slice',lbl:'Churros',sub:'With filling and coating'},
+  {id:'crepes',ico:'fa-solid fa-circle',lbl:'Crêpes',sub:'Sweet or savoury'},
+  {id:'waffles',ico:'fa-solid fa-border-all',lbl:'Waffles',sub:'With custom toppings'},
+  {id:'torta',ico:'fa-solid fa-chart-pie',lbl:'Tart / Pie',sub:'Sweet or savoury'},
+  {id:'outro',ico:'fa-solid fa-pen-fancy',lbl:'Other',sub:'Describe below'}
+];
+
+var CAMPOS={
+  bolo:[
+    {id:'tamanho',tipo:'chips',lbl:{'pt':'Tamanho / Porções *','en':'Size / Servings *'},ops:{'pt':['Pequeno (4–6 fatias)','Médio (8–12 fatias)','Grande (14–20 fatias)','Família (+20 fatias)','Definir por peso'],'en':['Small (4–6 slices)','Medium (8–12 slices)','Large (14–20 slices)','Family (20+ slices)','Define by weight']}},
+    {id:'andares',tipo:'chips',lbl:{'pt':'Número de andares','en':'Number of tiers'},ops:{'pt':['1 andar','2 andares','3 andares','4+ andares'],'en':['1 tier','2 tiers','3 tiers','4+ tiers']}},
+    {id:'recheio',tipo:'chips',lbl:{'pt':'Recheio','en':'Filling'},ops:{'pt':['Chocolate','Baunilha','Morango','Limão','Caramelo','Maracujá','Sem recheio'],'en':['Chocolate','Vanilla','Strawberry','Lemon','Caramel','Passionfruit','No filling']}},
+    {id:'cobertura',tipo:'chips',lbl:{'pt':'Cobertura','en':'Coating'},ops:{'pt':['Fondant','Buttercream','Chantilly','Ganache','Nua (sem cobertura)'],'en':['Fondant','Buttercream','Whipped cream','Ganache','Naked']}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Tema / Ocasião *','en':'Theme / Occasion *'},ph:{'pt':'Ex: Aniversário da Maria, 5 anos, tema princesas...','en':'E.g. Maria\'s birthday, 5 years, princess theme...'}},
+    {id:'nome_prod',tipo:'text',lbl:{'pt':'Nome ou mensagem no bolo','en':'Name or message on cake'},ph:{'pt':'Ex: Parabéns Maria','en':'E.g. Happy Birthday Maria'}},
+    {id:'qtd',tipo:'qty',lbl:{'pt':'Quantidade','en':'Quantity'}}
+  ],
+  'bolo-andares':[
+    {id:'andares',tipo:'chips',lbl:{'pt':'Número de andares *','en':'Number of tiers *'},ops:{'pt':['2 andares','3 andares','4 andares','5+ andares'],'en':['2 tiers','3 tiers','4 tiers','5+ tiers']}},
+    {id:'porcoes',tipo:'chips',lbl:{'pt':'Número de porções','en':'Number of servings'},ops:{'pt':['20–30','30–50','50–80','80–120','120+'],'en':['20–30','30–50','50–80','80–120','120+']}},
+    {id:'recheio',tipo:'chips',lbl:{'pt':'Recheio','en':'Filling'},ops:{'pt':['Chocolate','Baunilha','Morango','Caramelo','Misto'],'en':['Chocolate','Vanilla','Strawberry','Caramel','Mixed']}},
+    {id:'cobertura',tipo:'chips',lbl:{'pt':'Cobertura','en':'Coating'},ops:{'pt':['Fondant','Buttercream','Semi-naked'],'en':['Fondant','Buttercream','Semi-naked']}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Tema / Ocasião *','en':'Theme / Occasion *'},ph:{'pt':'Ex: Casamento clássico, bodas de prata...','en':'E.g. Classic wedding, silver anniversary...'}},
+    {id:'cores_tema',tipo:'text',lbl:{'pt':'Cores do evento','en':'Event colors'},ph:{'pt':'Ex: Branco e dourado','en':'E.g. White and gold'}}
+  ],
+  cupcakes:[
+    {id:'qtd',tipo:'chips',lbl:{'pt':'Quantidade *','en':'Quantity *'},ops:{'pt':['6 unidades','12 unidades','24 unidades','48 unidades','Outra'],'en':['6 units','12 units','24 units','48 units','Other']}},
+    {id:'recheio',tipo:'chips',lbl:{'pt':'Recheio','en':'Filling'},ops:{'pt':['Chocolate','Baunilha','Morango','Limão','Caramelo','Sem recheio'],'en':['Chocolate','Vanilla','Strawberry','Lemon','Caramel','No filling']}},
+    {id:'cobertura',tipo:'chips',lbl:{'pt':'Cobertura','en':'Topping'},ops:{'pt':['Buttercream','Fondant','Chantilly','Ganache'],'en':['Buttercream','Fondant','Whipped cream','Ganache']}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Tema *','en':'Theme *'},ph:{'pt':'Ex: Aniversário, chá de bebé, corporativo...','en':'E.g. Birthday, baby shower, corporate...'}},
+    {id:'personalizacao',tipo:'text',lbl:{'pt':'Personalização (toppers, letras, etc.)','en':'Customization (toppers, letters, etc.)'},ph:{'pt':'Ex: Toppers com nome, número de anos...','en':'E.g. Name toppers, age number...'}}
+  ],
+  'mini-bolos':[
+    {id:'qtd',tipo:'chips',lbl:{'pt':'Quantidade *','en':'Quantity *'},ops:{'pt':['4 unidades','6 unidades','8 unidades','12 unidades','16 unidades'],'en':['4 units','6 units','8 units','12 units','16 units']}},
+    {id:'sabor',tipo:'chips',lbl:{'pt':'Sabor','en':'Flavor'},ops:{'pt':['Chocolate','Baunilha','Red Velvet','Limão','Misto'],'en':['Chocolate','Vanilla','Red Velvet','Lemon','Mixed']}},
+    {id:'cobertura',tipo:'chips',lbl:{'pt':'Cobertura','en':'Coating'},ops:{'pt':['Fondant','Buttercream','Glazé','Ganache'],'en':['Fondant','Buttercream','Glaze','Ganache']}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Tema *','en':'Theme *'},ph:{'pt':'Ex: Festa jungle, princesas, super-heróis...','en':'E.g. Jungle party, princesses, superheroes...'}},
+    {id:'nome_prod',tipo:'text',lbl:{'pt':'Nome ou personalização','en':'Name or customization'},ph:{'pt':'Ex: Cada um com um nome diferente...','en':'E.g. Each one with a different name...'}}
+  ],
+  donuts:[
+    {id:'qtd',tipo:'chips',lbl:{'pt':'Quantidade *','en':'Quantity *'},ops:{'pt':['6 unidades','12 unidades','24 unidades','Caixa de 50','Outra'],'en':['6 units','12 units','24 units','Box of 50','Other']}},
+    {id:'cobertura',tipo:'chips',lbl:{'pt':'Cobertura / Glacé','en':'Coating / Glaze'},ops:{'pt':['Chocolate negro','Chocolate branco','Morango','Caramelo','Colorido','Misto'],'en':['Dark chocolate','White chocolate','Strawberry','Caramel','Colorful','Mixed']}},
+    {id:'recheio',tipo:'chips',lbl:{'pt':'Recheio','en':'Filling'},ops:{'pt':['Chocolate','Morango','Caramelo','Creme','Sem recheio'],'en':['Chocolate','Strawberry','Caramel','Cream','No filling']}},
+    {id:'toppings',tipo:'chips',lbl:{'pt':'Toppings','en':'Toppings'},ops:{'pt':['Sprinkles coloridos','Frutos secos','Coco','Oreo','Sem toppings'],'en':['Colorful sprinkles','Nuts','Coconut','Oreo','No toppings']}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Tema / Personalização','en':'Theme / Customization'},ph:{'pt':'Ex: Cores da empresa, festa específica...','en':'E.g. Company colors, specific party...'}}
+  ],
+  cookies:[
+    {id:'qtd',tipo:'chips',lbl:{'pt':'Quantidade *','en':'Quantity *'},ops:{'pt':['6 unidades','12 unidades','24 unidades','48 unidades','Outra'],'en':['6 units','12 units','24 units','48 units','Other']}},
+    {id:'tipo_cookie',tipo:'chips',lbl:{'pt':'Tipo de cookie','en':'Cookie type'},ops:{'pt':['Clássica com pepitas','Recheada','Decorada com glacê','Tipo brownie','Aveia'],'en':['Classic with chips','Filled','Decorated with icing','Brownie style','Oat']}},
+    {id:'sabor',tipo:'chips',lbl:{'pt':'Sabor base','en':'Base flavor'},ops:{'pt':['Chocolate','Baunilha','Manteiga','Red Velvet','Avelã'],'en':['Chocolate','Vanilla','Butter','Red Velvet','Hazelnut']}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Tema / Decoração','en':'Theme / Decoration'},ph:{'pt':'Ex: Natal, Páscoa, logótipo da empresa...','en':'E.g. Christmas, Easter, company logo...'}},
+    {id:'mensagem',tipo:'text',lbl:{'pt':'Mensagem ou personalização','en':'Message or customization'},ph:{'pt':'Ex: Nome, data, texto especial...','en':'E.g. Name, date, special text...'}}
+  ],
+  'cake-pops':[
+    {id:'qtd',tipo:'chips',lbl:{'pt':'Quantidade *','en':'Quantity *'},ops:{'pt':['12 unidades','24 unidades','36 unidades','50 unidades','Outra'],'en':['12 units','24 units','36 units','50 units','Other']}},
+    {id:'sabor',tipo:'chips',lbl:{'pt':'Sabor do bolo base','en':'Cake base flavor'},ops:{'pt':['Chocolate','Baunilha','Red Velvet','Limão'],'en':['Chocolate','Vanilla','Red Velvet','Lemon']}},
+    {id:'cobertura',tipo:'chips',lbl:{'pt':'Cobertura','en':'Coating'},ops:{'pt':['Chocolate negro','Chocolate branco','Chocolate de leite','Colorido'],'en':['Dark chocolate','White chocolate','Milk chocolate','Colorful']}},
+    {id:'decoracao',tipo:'chips',lbl:{'pt':'Decoração','en':'Decoration'},ops:{'pt':['Simples','Sprinkles','Drizzle','Personalizados'],'en':['Simple','Sprinkles','Drizzle','Personalized']}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Tema / Ocasião','en':'Theme / Occasion'},ph:{'pt':'Ex: Chá de bebé, casamento, aniversário...','en':'E.g. Baby shower, wedding, birthday...'}}
+  ],
+  churros:[
+    {id:'qtd',tipo:'chips',lbl:{'pt':'Porção / Quantidade *','en':'Portion / Quantity *'},ops:{'pt':['Porção individual','Porção dupla','Caixa 10 unid.','Caixa 20 unid.','Buffet (50+)'],'en':['Single portion','Double portion','Box of 10','Box of 20','Buffet (50+)']}},
+    {id:'recheio',tipo:'chips',lbl:{'pt':'Recheio','en':'Filling'},ops:{'pt':['Chocolate','Caramelo','Doce de leite','Baunilha','Morango','Sem recheio'],'en':['Chocolate','Caramel','Dulce de leche','Vanilla','Strawberry','No filling']}},
+    {id:'cobertura',tipo:'chips',lbl:{'pt':'Cobertura exterior','en':'Exterior coating'},ops:{'pt':['Açúcar e canela','Chocolate negro','Chocolate branco','Caramelo','Simples'],'en':['Sugar and cinnamon','Dark chocolate','White chocolate','Caramel','Plain']}},
+    {id:'formato',tipo:'chips',lbl:{'pt':'Formato','en':'Shape'},ops:{'pt':['Reto clássico','Espiral','Estrela','Mini churros'],'en':['Classic straight','Spiral','Star','Mini churros']}},
+    {id:'acompanhamento',tipo:'chips',lbl:{'pt':'Molho / Acompanhamento','en':'Dipping sauce'},ops:{'pt':['Molho de chocolate','Molho de caramelo','Chantilly','Sem molho'],'en':['Chocolate sauce','Caramel sauce','Whipped cream','No sauce']}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Evento / Personalização','en':'Event / Customization'},ph:{'pt':'Ex: Festa de aniversário, food stand...','en':'E.g. Birthday party, food stand...'}}
+  ],
+  crepes:[
+    {id:'qtd',tipo:'chips',lbl:{'pt':'Quantidade *','en':'Quantity *'},ops:{'pt':['Porção individual','5 unidades','10 unidades','20 unidades','Buffet'],'en':['Single portion','5 units','10 units','20 units','Buffet']}},
+    {id:'tipo',tipo:'chips',lbl:{'pt':'Tipo','en':'Type'},ops:{'pt':['Doce','Salgado','Misto'],'en':['Sweet','Savoury','Mixed']}},
+    {id:'recheio_doce',tipo:'chips',lbl:{'pt':'Recheio doce','en':'Sweet filling'},ops:{'pt':['Nutella','Morango com chantilly','Caramelo','Banana e chocolate','Frutos vermelhos'],'en':['Nutella','Strawberry with cream','Caramel','Banana and chocolate','Mixed berries']}},
+    {id:'recheio_salgado',tipo:'chips',lbl:{'pt':'Recheio salgado','en':'Savoury filling'},ops:{'pt':['Frango com queijo','Atum','Vegetariano','Fiambre e queijo'],'en':['Chicken and cheese','Tuna','Vegetarian','Ham and cheese']}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Evento / Personalização','en':'Event / Customization'},ph:{'pt':'Ex: Casamento, festa de criança...','en':'E.g. Wedding, children\'s party...'}}
+  ],
+  waffles:[
+    {id:'qtd',tipo:'chips',lbl:{'pt':'Quantidade *','en':'Quantity *'},ops:{'pt':['Porção individual','5 unidades','10 unidades','20 unidades','Buffet'],'en':['Single portion','5 units','10 units','20 units','Buffet']}},
+    {id:'tipo',tipo:'chips',lbl:{'pt':'Tipo de waffle','en':'Waffle type'},ops:{'pt':['Clássico','Belga','Mini waffles','Waffle cone'],'en':['Classic','Belgian','Mini waffles','Waffle cone']}},
+    {id:'toppings',tipo:'chips',lbl:{'pt':'Toppings','en':'Toppings'},ops:{'pt':['Nutella','Morango','Banana','Chantilly','Caramelo','Frutos vermelhos','Misto'],'en':['Nutella','Strawberry','Banana','Whipped cream','Caramel','Mixed berries','Mixed']}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Evento / Personalização','en':'Event / Customization'},ph:{'pt':'Ex: Aniversário, evento corporativo...','en':'E.g. Birthday, corporate event...'}}
+  ],
+  torta:[
+    {id:'tamanho',tipo:'chips',lbl:{'pt':'Tamanho *','en':'Size *'},ops:{'pt':['Individual (15cm)','Média (22cm)','Grande (28cm)','Familiar (32cm)'],'en':['Individual (15cm)','Medium (22cm)','Large (28cm)','Family (32cm)']}},
+    {id:'tipo',tipo:'chips',lbl:{'pt':'Tipo','en':'Type'},ops:{'pt':['Doce','Salgada'],'en':['Sweet','Savoury']}},
+    {id:'sabor_doce',tipo:'chips',lbl:{'pt':'Sabor doce','en':'Sweet flavor'},ops:{'pt':['Morango','Limão','Maçã','Chocolate','Frutos vermelhos','Baunilha'],'en':['Strawberry','Lemon','Apple','Chocolate','Mixed berries','Vanilla']}},
+    {id:'sabor_salgado',tipo:'chips',lbl:{'pt':'Sabor salgado','en':'Savoury flavor'},ops:{'pt':['Frango','Legumes','Atum','Queijo e espinafre'],'en':['Chicken','Vegetables','Tuna','Cheese and spinach']}},
+    {id:'massa',tipo:'chips',lbl:{'pt':'Tipo de massa','en':'Pastry type'},ops:{'pt':['Massa folhada','Massa quebrada','Massa de biscoito','Sem massa (cheesecake)'],'en':['Puff pastry','Shortcrust','Biscuit base','No pastry (cheesecake)']}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Ocasião / Personalização','en':'Occasion / Customization'},ph:{'pt':'Ex: Piquenique, evento, aniversário...','en':'E.g. Picnic, event, birthday...'}}
+  ],
+  outro:[
+    {id:'produto_desc',tipo:'textarea',lbl:{'pt':'Descreve o produto que queres *','en':'Describe the product you want *'},ph:{'pt':'Ex: Bouquet de brigadeiros em formato de flores, 30 unidades, para oferecer num aniversário...','en':'E.g. Bouquet of brigadeiros in flower shape, 30 units, for a birthday gift...'}},
+    {id:'qtd',tipo:'qty',lbl:{'pt':'Quantidade','en':'Quantity'}},
+    {id:'tema',tipo:'text',lbl:{'pt':'Tema / Ocasião','en':'Theme / Occasion'},ph:{'pt':'Ex: Aniversário, casamento, corporativo...','en':'E.g. Birthday, wedding, corporate...'}}
+  ]
+};
+
+var CORES_PT=['Rosa','Roxo','Dourado','Verde Menta','Azul','Laranja','Vermelho','Branco','Preto','Bege','Verde Suave','Outra cor'];
+var CORES_EN=['Pink','Purple','Gold','Mint Green','Blue','Orange','Red','White','Black','Beige','Soft Green','Other color'];
+var CORES_HEX=['#ff6b9d','#b14ae8','#ffd166','#06d6a0','#3d9eff','#ff9f43','#ff4757','#f5f5f5','#222','#c8a96e','#a8e6cf',null];
+var ACAB_PT=['Clássico','Moderno','Rústico','Minimalista','Luxuoso','Temático','Aquarela','Floral','Nude/Semi-naked','Metalizado'];
+var ACAB_EN=['Classic','Modern','Rustic','Minimalist','Luxurious','Themed','Watercolor','Floral','Nude/Semi-naked','Metallic'];
+var URG_PT=[{id:'normal',ico:'fa-regular fa-clock',lbl:'Normal',sub:'5–7 dias'},{id:'rapido',ico:'fa-solid fa-rocket',lbl:'Rápido',sub:'2–4 dias'},{id:'urgente',ico:'fa-solid fa-fire',lbl:'Urgente',sub:'24–48h'}];
+var URG_EN=[{id:'normal',ico:'fa-regular fa-clock',lbl:'Normal',sub:'5–7 days'},{id:'rapido',ico:'fa-solid fa-rocket',lbl:'Fast',sub:'2–4 days'},{id:'urgente',ico:'fa-solid fa-fire',lbl:'Urgent',sub:'24–48h'}];
+
+var TXT={
+  pt:{hdrNome:'Pedido Personalizado',catalog:'Ver Catálogo',lbl0:'Produto',lbl1:'Detalhes',lbl2:'Visual',lbl3:'Entrega',lbl4:'Resumo',s0title:'O que queres encomendar?',s0desc:'Escolhe o tipo de produto personalizado',s0outroLbl:'Outro produto — descreve aqui',s0next:'Próximo',s1title:'Detalhes do Pedido',s1desc:'Especifica o teu produto ao máximo',s1next:'Próximo',s2title:'Cores e Estilo',s2desc:'Define a identidade visual do teu pedido',s2coresLbl:'Cores principais',s2acabLbl:'Acabamento / Estilo',s2notasLbl:'Outros detalhes visuais',s2refLbl:'Foto de referência / inspiração',uploadLbl:'Toque para enviar foto',uploadSub:'JPG, PNG, HEIC — máx. 10MB',uploadChange:'Trocar imagem',s2next:'Próximo',s3title:'Entrega e Contacto',s3desc:'Quando e como queres receber',s3urgLbl:'Urgência',s3dateLbl:'Data de entrega preferida *',s3entLbl:'Tipo de entrega',s3nomeLbl:'O teu nome *',s3telLbl:'Telefone *',s3emailLbl:'Email',optLevant:'Levantamento na loja',optEntrega:'Entrega ao domicílio',s3next:'Ver Resumo',infoOrcamento:'O orçamento final será confirmado pela nossa equipa antes da produção.',s4title:'Confirmar Pedido',s4desc:'Revê os detalhes e envia o pedido',resumoTitle:'Resumo do Pedido',btnSubmitTxt:'Enviar Pedido',btnEditarTxt:'Editar pedido',successTitle:'Pedido Enviado!',successDesc:'O teu pedido personalizado foi recebido. A nossa equipa irá analisar e entrar em contacto em breve.',btnTrackTxt:'Rastrear Encomenda',errTipo:'Escolhe um tipo de produto ou descreve o teu pedido.',errData:'Escolhe uma data de entrega.',errNome:'Indica o teu nome.',errTel:'Indica um telefone válido.',sendErr:'Erro ao enviar. Tenta de novo.',sending:'A enviar...',lblTipo:'Produto',lblQty:'Quantidade',lblCores:'Cores',lblAcab:'Acabamento',lblNotas:'Detalhes',lblData:'Data',lblUrg:'Urgência',lblContato:'Contacto',lblFoto:'Foto de referência',campoObrigatorio:'campo obrigatório'},
+  en:{hdrNome:'Custom Order',catalog:'View Catalog',lbl0:'Product',lbl1:'Details',lbl2:'Visual',lbl3:'Delivery',lbl4:'Summary',s0title:'What would you like to order?',s0desc:'Choose the type of custom product',s0outroLbl:'Other product — describe here',s0next:'Next',s1title:'Order Details',s1desc:'Specify your product in detail',s1next:'Next',s2title:'Colors and Style',s2desc:'Define the visual identity of your order',s2coresLbl:'Main colors',s2acabLbl:'Style / Finish',s2notasLbl:'Other visual details',s2refLbl:'Reference / inspiration photo',uploadLbl:'Tap to upload photo',uploadSub:'JPG, PNG, HEIC — max 10MB',uploadChange:'Change image',s2next:'Next',s3title:'Delivery and Contact',s3desc:'When and how you want to receive it',s3urgLbl:'Timeline',s3dateLbl:'Preferred delivery date *',s3entLbl:'Delivery type',s3nomeLbl:'Your name *',s3telLbl:'Phone *',s3emailLbl:'Email',optLevant:'Store pickup',optEntrega:'Home delivery',s3next:'See Summary',infoOrcamento:'The final quote will be confirmed by our team before production.',s4title:'Confirm Order',s4desc:'Review the details and submit your order',resumoTitle:'Order Summary',btnSubmitTxt:'Send Order',btnEditarTxt:'Edit order',successTitle:'Order Sent!',successDesc:'Your custom order has been received. Our team will review it and contact you shortly.',btnTrackTxt:'Track Order',errTipo:'Choose a product type or describe your order.',errData:'Please choose a delivery date.',errNome:'Please enter your name.',errTel:'Please enter a valid phone number.',sendErr:'Error sending. Please try again.',sending:'Sending...',lblTipo:'Product',lblQty:'Quantity',lblCores:'Colors',lblAcab:'Style',lblNotas:'Details',lblData:'Date',lblUrg:'Timeline',lblContato:'Contact',lblFoto:'Reference photo',campoObrigatorio:'required field'}
+};
+function tx(k){return(TXT[idioma]||TXT.pt)[k]||(TXT.pt)[k]||k;}
+function tipos(){return idioma==='en'?TIPOS_EN:TIPOS_PT;}
+function urgencias(){return idioma==='en'?URG_EN:URG_PT;}
+function cores(){return idioma==='en'?CORES_EN:CORES_PT;}
+function acabamentos(){return idioma==='en'?ACAB_EN:ACAB_PT;}
+function campoLbl(c){return(c.lbl[idioma]||c.lbl.pt);}
+function campoPh(c){return c.ph?(c.ph[idioma]||c.ph.pt):'';}
+function campoOps(c){return c.ops?(c.ops[idioma]||c.ops.pt):[];}
+function getCampos(){return CAMPOS[estado.tipoId]||CAMPOS['outro'];}
+
+function toast(msg,tp){var el=document.getElementById('toast');el.textContent=msg;el.className='toast show '+(tp||'ok');setTimeout(function(){el.classList.remove('show');},3200);}
+function formatarTel(inp){var v=inp.value.replace(/[^0-9+]/g,'');if(v.startsWith('+244')){var r=v.slice(4);if(r.length>9)r=r.slice(0,9);inp.value='+244 '+r;}else if(v.startsWith('9')){inp.value='+244 '+v.replace(/\D/g,'').slice(0,9);}else if(v.length>0){inp.value='+244 ';}}
+function validarTel(v){return/^(\+244)?\s?9\d{8}$/.test(v.replace(/\s+/g,''));}
+function dataMinima(){var d=new Date();d.setDate(d.getDate()+2);return d.toISOString().split('T')[0];}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function comprimirImagem(file,maxPx,q){
+  return new Promise(function(resolve){
+    var rd=new FileReader();
+    rd.onload=function(e){
+      var img=new Image();
+      img.onload=function(){
+        var r=Math.min(maxPx/img.width,maxPx/img.height,1);
+        var c=document.createElement('canvas');
+        c.width=Math.round(img.width*r);c.height=Math.round(img.height*r);
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        resolve(c.toDataURL('image/jpeg',q));
+      };
+      img.src=e.target.result;
+    };
+    rd.readAsDataURL(file);
+  });
+}
+
+function aplicarIdioma(){
+  document.title=tx('hdrNome');
+  ['hdrNome','navCatTxt','lbl0','lbl1','lbl2','lbl3','lbl4',
+   's0title','s0desc','s0outroLbl','s0next',
+   's1title','s1desc','s1next',
+   's2title','s2desc','s2coresLbl','s2acabLbl','s2notasLbl','s2refLbl','uploadLbl','uploadSub','s2next',
+   's3title','s3desc','s3urgLbl','s3dateLbl','s3entLbl','s3nomeLbl','s3telLbl','s3emailLbl','s3next','infoOrcamento',
+   's4title','s4desc','resumoTitle','btnSubmitTxt','btnEditarTxt',
+   'successTitle','successDesc','btnTrackTxt','btnCatTxt2'
+  ].forEach(function(k){var el=document.getElementById(k);if(el)el.textContent=tx(k);});
+  document.getElementById('fData').min=dataMinima();
+  var tema=localStorage.getItem('tema')||'dark';
+  document.getElementById('fData').style.colorScheme=tema;
+  document.getElementById('optLevant').textContent=tx('optLevant');
+  document.getElementById('optEntrega').textContent=tx('optEntrega');
+  if(loja.entrega_ativa)document.getElementById('lojaEntradaWrap').style.display='block';
+}
+
+function construirTipos(){
+  document.getElementById('tipoGrid').innerHTML=tipos().map(function(tp){
+    var on=estado.tipoId===tp.id;
+    return'<div class="tipo-card'+(on?' on':'')+'" onclick="selecionarTipo(\''+tp.id+'\',\''+esc(tp.lbl)+'\',this)">'+
+      '<div class="tipo-card-ico"><i class="'+tp.ico+'"></i></div>'+
+      '<div><div class="tipo-card-lbl">'+tp.lbl+'</div><div class="tipo-card-sub">'+tp.sub+'</div></div>'+
+    '</div>';
+  }).join('');
+}
+
+function selecionarTipo(id,lbl,el){
+  estado.tipoId=id;estado.tipoLabel=lbl;
+  document.querySelectorAll('.tipo-card').forEach(function(c){c.classList.remove('on');});
+  el.classList.add('on');
+}
+
+function construirCamposDinamicos(){
+  var campos=getCampos();
+  document.getElementById('camposDinamicos').innerHTML=campos.map(function(c){
+    var lbl=campoLbl(c),ph=campoPh(c),ops=campoOps(c);
+    var html='<div class="fg"><label>'+esc(lbl)+'</label>';
+    if(c.tipo==='chips'){
+      html+='<div class="chips" id="chips_'+c.id+'">';
+      ops.forEach(function(op){
+        var on=estado.campos[c.id]===op;
+        html+='<button class="chip'+(on?' on':'')+'" onclick="selecionarChip(\''+c.id+'\',\''+op.replace(/'/g,"\\'").replace(/\\/g,'\\\\')+'\',this)">'+esc(op)+'</button>';
+      });
+      html+='</div>';
+    } else if(c.tipo==='text'){
+      html+='<input class="fi" type="text" id="campo_'+c.id+'" placeholder="'+esc(ph)+'" value="'+esc(estado.campos[c.id]||'')+'">';
+    } else if(c.tipo==='textarea'){
+      html+='<textarea class="fi" id="campo_'+c.id+'" rows="3" placeholder="'+esc(ph)+'">'+esc(estado.campos[c.id]||'')+'</textarea>';
+    } else if(c.tipo==='qty'){
+      html+='<div class="stepper"><button onclick="altQty(-1)"><i class="fa-solid fa-minus"></i></button><span id="qtyVal">'+estado.quantidade+'</span><button onclick="altQty(1)"><i class="fa-solid fa-plus"></i></button></div>';
+    }
+    html+='</div>';
+    return html;
+  }).join('');
+}
+
+function selecionarChip(campoId,valor,el){
+  estado.campos[campoId]=valor;
+  document.querySelectorAll('#chips_'+campoId+' .chip').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+}
+
+function altQty(d){estado.quantidade=Math.max(1,Math.min(99,estado.quantidade+d));var el=document.getElementById('qtyVal');if(el)el.textContent=estado.quantidade;}
+
+function construirVisual(){
+  var coresLabels=cores();
+  document.getElementById('coresChips').innerHTML=coresLabels.map(function(lbl,i){
+    var on=estado.cores.includes(lbl);
+    var hex=CORES_HEX[i];
+    var style=hex?'style="background:'+hex+';border-color:'+(on?'var(--white)':hex)+';"':'';
+    return'<button class="chip'+(on?' on':'')+'" '+style+' onclick="toggleCor(\''+esc(lbl)+'\',this)">'+lbl+'</button>';
+  }).join('');
+  document.getElementById('acabChips').innerHTML=acabamentos().map(function(a){
+    var on=estado.acabamento===a;
+    return'<button class="chip'+(on?' on':'')+'" onclick="selecionarAcab(\''+esc(a)+'\',this)">'+a+'</button>';
+  }).join('');
+}
+
+function toggleCor(lbl,el){
+  var idx=estado.cores.indexOf(lbl);
+  if(idx>=0){estado.cores.splice(idx,1);el.classList.remove('on');}
+  else if(estado.cores.length<5){estado.cores.push(lbl);el.classList.add('on');}
+}
+
+function selecionarAcab(val,el){
+  estado.acabamento=val;
+  document.querySelectorAll('#acabChips .chip').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+}
+
+function carregarImagem(input){
+  var file=input.files[0];if(!file)return;
+  comprimirImagem(file,900,0.72).then(function(b64){
+    estado.refImg=b64;
+    document.getElementById('uploadPreview').src=b64;
+    document.getElementById('uploadArea').classList.add('has-img');
+    document.getElementById('uploadLbl').textContent=tx('uploadChange');
+    document.getElementById('uploadSub').textContent=file.name;
+  });
+}
+
+function construirUrgencia(){
+  document.getElementById('urgGrid').innerHTML=urgencias().map(function(u){
+    var on=estado.urgencia===u.id;
+    return'<div class="urg-card'+(on?' on':'')+'" onclick="selecionarUrg(\''+u.id+'\',this)">'+
+      '<i class="'+u.ico+'"></i><span>'+u.lbl+'</span><small>'+u.sub+'</small>'+
+    '</div>';
+  }).join('');
+}
+
+function selecionarUrg(id,el){
+  estado.urgencia=id;
+  document.querySelectorAll('.urg-card').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');
+}
+
+function construirResumo(){
+  var campos=getCampos();
+  var urg=urgencias().find(function(u){return u.id===estado.urgencia;})||{lbl:'Normal'};
+  var dataFmt=estado.dataEntrega?new Date(estado.dataEntrega+'T12:00').toLocaleDateString(idioma==='en'?'en-GB':'pt',{day:'2-digit',month:'long',year:'numeric'}):'—';
+  var html='';
+  html+='<div class="resumo-row"><span class="resumo-row-lbl">'+tx('lblTipo')+'</span><span class="resumo-row-val">'+esc(estado.tipoLabel||estado.tipoOutro||'—')+'</span></div>';
+  campos.forEach(function(c){
+    if(c.tipo==='qty')return;
+    var val=estado.campos[c.id]||'';
+    if(!val)return;
+    html+='<div class="resumo-row"><span class="resumo-row-lbl">'+esc(campoLbl(c).replace(' *',''))+'</span><span class="resumo-row-val">'+esc(val)+'</span></div>';
+  });
+  html+='<div class="resumo-row"><span class="resumo-row-lbl">'+tx('lblQty')+'</span><span class="resumo-row-val">'+estado.quantidade+'</span></div>';
+  if(estado.cores.length)html+='<div class="resumo-row"><span class="resumo-row-lbl">'+tx('lblCores')+'</span><span class="resumo-row-val">'+esc(estado.cores.join(', '))+'</span></div>';
+  if(estado.acabamento)html+='<div class="resumo-row"><span class="resumo-row-lbl">'+tx('lblAcab')+'</span><span class="resumo-row-val">'+esc(estado.acabamento)+'</span></div>';
+  if(estado.notas)html+='<div class="resumo-row"><span class="resumo-row-lbl">'+tx('lblNotas')+'</span><span class="resumo-row-val">'+esc(estado.notas)+'</span></div>';
+  html+='<div class="resumo-row"><span class="resumo-row-lbl">'+tx('lblData')+'</span><span class="resumo-row-val">'+dataFmt+'</span></div>';
+  html+='<div class="resumo-row"><span class="resumo-row-lbl">'+tx('lblUrg')+'</span><span class="resumo-row-val">'+urg.lbl+'</span></div>';
+  html+='<div class="resumo-row"><span class="resumo-row-lbl">'+tx('lblContato')+'</span><span class="resumo-row-val">'+esc(estado.nome)+' · '+esc(estado.telefone)+'</span></div>';
+  if(estado.refImg)html+='<div class="resumo-row"><span class="resumo-row-lbl">'+tx('lblFoto')+'</span><span class="resumo-row-val"><img src="'+estado.refImg+'" class="resumo-img"/></span></div>';
+  document.getElementById('resumoBody').innerHTML=html;
+}
+
+function irPasso(n){
+  document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('step'+n).classList.add('active');
+  document.querySelectorAll('.ws').forEach(function(w,i){
+    w.classList.remove('active','done');
+    if(i<n)w.classList.add('done');
+    else if(i===n)w.classList.add('active');
+  });
+  estado.passo=n;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function avancar(passo){
+  if(passo===0){
+    var outro=document.getElementById('tipoOutro').value.trim();
+    if(!estado.tipoId&&!outro){toast(tx('errTipo'),'err');return;}
+    if(estado.tipoId==='outro'||!estado.tipoId)estado.tipoOutro=outro;
+    construirCamposDinamicos();
+    irPasso(1);
+  } else if(passo===1){
+    var campos=getCampos();var temErro=false;
+    campos.forEach(function(c){
+      if(c.tipo==='text'||c.tipo==='textarea'){var el=document.getElementById('campo_'+c.id);if(el)estado.campos[c.id]=el.value.trim();}
+      if(campoLbl(c).endsWith('*')&&!estado.campos[c.id]&&c.tipo!=='qty'&&!temErro){
+        toast(campoLbl(c).replace(' *','')+': '+tx('campoObrigatorio'),'err');temErro=true;
+      }
+    });
+    if(temErro)return;
+    construirVisual();irPasso(2);
+  } else if(passo===2){
+    estado.notas=document.getElementById('fNotas').value.trim();
+    construirUrgencia();irPasso(3);
+  } else if(passo===3){
+    estado.dataEntrega=document.getElementById('fData').value;
+    estado.nome=document.getElementById('fNomeCli').value.trim();
+    estado.telefone=document.getElementById('fTel').value.trim();
+    estado.email=document.getElementById('fEmail').value.trim();
+    estado.tipoEnt=document.getElementById('fTipoEnt').value;
+    if(!estado.dataEntrega){toast(tx('errData'),'err');return;}
+    if(!estado.nome){toast(tx('errNome'),'err');return;}
+    if(!validarTel(estado.telefone)){toast(tx('errTel'),'err');return;}
+    construirResumo();irPasso(4);
+  }
+}
+
+function recuar(passo){irPasso(passo-1);}
+
+async function submeter(){
+  var btn=document.getElementById('btnSubmit');
+  var msgEl=document.getElementById('msgErr');
+  btn.disabled=true;
+  document.getElementById('btnSubmitTxt').textContent=tx('sending');
+  var campos=getCampos();
+  var descParts=[estado.tipoLabel||estado.tipoOutro||'Pedido Personalizado'];
+  campos.forEach(function(c){
+    if(c.tipo==='qty')return;
+    var val=estado.campos[c.id]||'';
+    if(val)descParts.push(campoLbl(c).replace(' *','')+': '+val);
+  });
+  descParts.push('Quantidade: '+estado.quantidade);
+  if(estado.cores.length)descParts.push('Cores: '+estado.cores.join(', '));
+  if(estado.acabamento)descParts.push('Estilo: '+estado.acabamento);
+  if(estado.notas)descParts.push('Detalhes: '+estado.notas);
+  var urg=urgencias().find(function(u){return u.id===estado.urgencia;})||{lbl:'Normal',sub:''};
+  var notasBase='[PEDIDO PERSONALIZADO]\n'+descParts.join('\n')+'\nUrgência: '+urg.lbl+' ('+urg.sub+')';
+  var notasComImg=notasBase+(estado.refImg?'\n'+estado.refImg:'');
+  var payload={
+    nome_cliente:estado.nome,email_cliente:estado.email||'',
+    telefone_cliente:estado.telefone,whatsapp_cliente:estado.telefone,
+    data_entrega:estado.dataEntrega,tipo_entrega:estado.tipoEnt,
+    notas:notasComImg,
+    itens:[{produto_id:null,nome_produto:estado.tipoLabel||estado.tipoOutro||'Pedido Personalizado',preco_unit:0,quantidade:estado.quantidade}],
+    tipo_pedido:'personalizado'
+  };
+  try{
+    var r=await fetch(API+'/api/encomendas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    var d=await r.json();
+    if(d.erro)throw new Error(d.erro);
+    document.getElementById('successRef').textContent=d.ref||'';
+    var tb=document.getElementById('btnTrack');
+    if(tb&&d.ref)tb.href='rastrear.html?ref='+encodeURIComponent(d.ref);
+    irPasso(5);
+  }catch(e){
+    msgEl.textContent=e.message||tx('sendErr');
+    btn.disabled=false;
+    document.getElementById('btnSubmitTxt').textContent=tx('btnSubmitTxt');
+  }
+}
+
+async function init(){
+  try{var r=await fetch(API+'/api/loja');loja=await r.json();}catch(e){loja={};}
+  if(loja.cor_primaria)document.documentElement.style.setProperty('--pink',loja.cor_primaria);
+  if(loja.cor_secundaria)document.documentElement.style.setProperty('--purple',loja.cor_secundaria);
+  aplicarIdioma();
+  construirTipos();
+}
+init();
+</script>
+</body>
+</html>
